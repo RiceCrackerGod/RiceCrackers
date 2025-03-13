@@ -210,7 +210,7 @@ if (continueBtn) {
   });
 }
 
-// Add whitepaper button functionality
+// Add share button functionality
 const shareBtn = document.querySelector('.primary-btn');
 if (shareBtn) {
   shareBtn.addEventListener('click', (e) => {
