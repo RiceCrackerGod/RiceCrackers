@@ -211,6 +211,15 @@ if (continueBtn) {
 }
 
 // Add whitepaper button functionality
+const shareBtn = document.querySelector('.primary-btn');
+if (shareBtn) {
+  shareBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.open('https://x.com/ricecrackergod', '_blank');
+  });
+}
+
+// Add whitepaper button functionality
 const whitepaperBtn = document.querySelector('.outline-btn');
 if (whitepaperBtn) {
   whitepaperBtn.addEventListener('click', (e) => {
