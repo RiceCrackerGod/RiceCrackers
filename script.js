@@ -81,11 +81,21 @@ if (shareBtn) {
   });
 }
 
-const herobtn = document.querySelector('.pulsebtn');
-if (herobtn) {
-  herobtn.addEventListener('click', (e) => {
+// Add market button functionality
+const marketBtn = document.querySelector('.hero-image');
+if (marketBtn) {
+  marketBtn.addEventListener('click', (e) => {
     e.preventDefault();
     window.open('https://x.com/ricecrackergod', '_blank');
+  });
+}
+
+// Add market button functionality
+const pricebtn = document.querySelector('.price-display');
+if (pricebtn) {
+  pricebtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.open('https://polygonscan.com/token/0x9d6432b17Bf74b3645b85760be95F7bCB550AB60', '_blank');
   });
 }
 
