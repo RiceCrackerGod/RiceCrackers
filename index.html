@@ -41,10 +41,6 @@
           >
             <i class="fas fa-moon"></i>
           </button>
-          <button id="connect-wallet" class="connect-btn">
-            <i class="fas fa-wallet"></i>
-            <span>Connect Wallet</span>
-          </button>
         </div>
       </div>
     </header>
@@ -52,22 +48,36 @@
     <main class="container">
       <!-- Hero Section -->
       <section class="hero">
-        <img
-          src="logo.png"
-          class="emoji pulse"
-          alt="Rice Cracker Logo"
-          width="80"
-          height="80"
-        />
-        <h1>RICE CRACKER GOD PROJECT</h1>
-        <p>
-          A cryptocurrency project built on the Polygon network,
-          providing a bridge between major blockchain networks.
-        </p>
-        <div class="token-info">
-          <span>$RCGC Rice Cracker God Coin</span>: Connecting Bitcoin,
-          Ethereum, Binance Smart Chain, and more via Polygon
-        </div>
+        <section class="community" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0;">
+          <div class="masterinfo">
+            <div class="info">
+              <h1>RICE CRACKER GOD PROJECT</h1>
+              <p>
+                A cryptocurrency project built on the Polygon network,
+                providing a bridge between major blockchain networks.
+              </p>
+            </div>        
+            <div class="token-info">
+              <span>$RCGC Rice Cracker God Coin</span>: Connecting Bitcoin,
+              Ethereum, Binance Smart Chain, and more via Polygon
+            </div>
+              <button class="primary-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                  <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                </svg>
+                Twitter
+              </button>
+          </div>
+          <button class="pulsebtn" style="background: transparent; border: none; padding: 0;">
+            <img
+            src="logo.png"
+            class="emoji pulse"
+            alt="Rice Cracker Logo"
+            width="240"
+            height="240"
+          />
+          </button>
+        </section>
       </section>
 
       <!-- Services Section -->
@@ -77,286 +87,36 @@
           <div class="card-header-wrapper">
             <div class="card-header">
               <i class="fas fa-bullhorn"></i>
-              <h2>Official Statements</h2>
+              <h2>Coin Information</h2>
             </div>
           </div>
           <div class="price-display">
             <div class="contract-info">
               <h3>Rice Cracker God Coin Contract</h3>
-              <div class="network-info">POLYGON(POS) Network</div>
-              <div class="contract-address">
-                0x9d6432b17Bf74b3645b85760be95F7bCB550AB60
-              </div>
+              <div class="network-info">Network: POLYGON(POS)</div>
+              <div class="contract-address"> Symbol: $RCGC</div>
+              <div class="contract-address"> contract-address: 0x9d6432b17Bf74b3645b85760be95F7bCB550AB60</div>
             </div>
           </div>
           <ul class="feature-list">
-            <h3>Upcoming Airdrop Event for
-            RICE CRACKER GOD Community</h3>
-            <p>
-              We are thrilled to announce upcoming airdrop event, distributing Rice Cracker God Coin to
-              supporters. Stay tuned for project updates, including innovative
-              features, network expansions, strategic collaborations, and more.
-            </br> 
-            </br>
-              Community Engagement: Expect
-              regular news on community initiatives and exclusive previews of
-              upcoming events.
-            </p>
-          </ul>
-
-          <div class="roadmap-section">
-            <h3>Project Roadmap</h3>
-            <ul class="roadmap-list">
-              <li class="completed" style="align-items: space-between">
-                <span class="roadmap-date">Q1 2025:</span> RICE CRACKER GOD COIN
-                token Launch<span class="live-badge">LIVE</span>
-              </li>
-              <li>
-                <span class="roadmap-date">Q1 2026:</span> Prototype Release of
-                RICECRACKER Tumblers.
-              </li>
-              <li>
-                <span class="roadmap-date">Q4 2026:</span> Initial
-                Decentralized Exchange (DEX) Launch.
-              </li>
-              <li>
-                <span class="roadmap-date">Q1 2027:</span> Full DEX integration
-                with expanded liquidity pools, ensuring robust trading
-                capabilities.
-              </li>
-              <li>
-                <span class="roadmap-date">Q2 2027:</span> Launch $RCGC DeFi Gaming
-                Platform.
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Tumblers Card -->
-        <div class="service-card animate-item animate-in">
-          <div class="card-header-wrapper">
-            <div class="card-header">
-              <i class="fas fa-random"></i>
-              <h2 class="font-display">Tumblers (Mixing Service)</h2>
-            </div>
-            <div class="coming-soon">
-              <i class="fas fa-lock"></i>
-              Coming Soon
-            </div>
-          </div>
-          <div class="games-note" style="margin-top: 1.8rem;">
-            <span>Supported Recipient Networks :Bitcoin (BTC), Ethereum (ETH), Solana (SOL).</span>
-          </div>
-          <div class="info-block">
-            <p style="text-align: justify; margin: 1rem;">
-              Tumbler stakes received crypto in $RCGC liquidity pools to enhance privacy, utilizing proprietary algorithms to obscure transaction trails before returning it to your address. If you choose a different currency, we’ll send the lower value based on price changes during the option delay, minus fees; for large deposits, contact us to set up a new address for split transactions—otherwise, we’ll return it, deducting gas fees.
-            </p>
-            <div class="info-block">
-              <h3>Distribution Options</h3>
-              <p>
-                • Multi-wallet distribution with randomized ratios for enhanced
-                obfuscation.<br />
-                • Customizable time delays, ranging from 1 hour to 3 days,
-                tailored to user preferences.
-              </p>
-            </div>
-            <div class="info-block">
-              <h3>Fee Structure</h3>
-              <p>
-                • Low Tier: 3% + Gas Fees / Crypto Worth Limit: $5,000.<br />
-                • Standard Tier: 5% + Gas Fees / Crypto Worth Limit: $25,000.<br />
-                • High Tier: 10% + Gas Fees / Crypto Worth Limit: Limit: $50,000.
-              </p>
-            </div>
-            <div class="info-block">
-              <h3>Initiate Transaction</h3>
-              <div
-                style="
-                  margin-top: 12px;
-                  display: flex;
-                  flex-direction: column;
-                  gap: 12px;
-                "
-              >
-                <div class="input-field-container">
-                  <label for="mix_amount" class="input-label"
-                    >Amount to mix</label
-                  >
-                  <input
-                    type="text"
-                    id="mix_amount"
-                    class="mix-input"
-                    placeholder="Enter amount - Crypto Worth $5,000 Limit"
-                    data-low-limit="Enter amount - Crypto Worth $5,000 Limit"
-                    data-standard-limit="Enter amount - Crypto Worth $25,000 Limit"
-                    data-high-limit="Enter amount - Crypto Worth $50,000 Limit"
-                  />
+            <div class="service-card">
+              <div class="card-header-wrapper">
+                <div class="card-header">
+                  <i class="fas fa-sack-dollar"></i>
+                  <h2>Wealth Story Behind Rice Cracker God Project</h2>
                 </div>
-
-                <div class="input-field-container">
-                  <label for="mix_network" class="input-label"
-                    >Blockchain network</label
-                  >
-                  <select id="mix_network" class="mix-input">
-                    <option value="">Select network</option>
-                    <option value="btc">Bitcoin (BTC)</option>
-                    <option value="eth">Ethereum (ETH)</option>
-                    <option value="sol">Solana (SOL)</option>
-                  </select>
+              </div>
+              <div class="marketplace-info">
+                <div class="note">
+                  Inspired by Cai Shen Ye, the Chinese God of Wealth, our token embodies the values of prosperity, generosity, and abundance. Just as Cai Shen Ye distributes wealth and fortune, Rice Cracker God Coin aims to create opportunities and value across multiple blockchain ecosystems. The humble rice cracker, transformed into a divine symbol of wealth, represents our mission to elevate everyday transactions into opportunities for prosperity.
                 </div>
-
-                <div id="address-container">
-                  <div class="input-field-container">
-                    <label for="mix_address_1" class="input-label"
-                      >Address to receive mixed tokens</label
-                    >
-                    <input
-                      type="text"
-                      id="mix_address_1"
-                      class="mix-input"
-                      placeholder="Enter address to receive mixed tokens"
-                    />
-                  </div>
-                </div>
-                
-                <div class="address-actions-container">                
-                  <a href="#" class="add-address-btn" id="add-address-btn">
-                    <i class="fas fa-plus"></i>
-                    Add additional receiving address
-                  </a>
-                  <div class="receive-usd-checkbox">
-                    <input type="checkbox" id="receive-usd">
-                    <label for="receive-usd">Receive USD</label>
-                  </div>
-                </div>
-
-                <div
-                  style="
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 8px;
-                  "
-                >
-                  <div class="input-field-container">
-                    <label for="mix_fee" class="input-label">Service fee</label>
-                    <select id="mix_fee" class="mix-input">
-                      <option value="low">Low Fee (3% + Gas)</option>
-                      <option value="standard">Standard Fee (5% + Gas)</option>
-                      <option value="high">Fee (10% + Gas)</option>
-                    </select>
-                  </div>
-
-                  <div class="input-field-container">
-                    <label for="mix_delay" class="input-label"
-                      >Time delay</label
-                    >
-                    <select id="mix_delay" class="mix-input">
-                      <option value="1">1 Hour</option>
-                      <option value="4">4 Hours</option>
-                      <option value="8">8 Hours</option>
-                      <option value="12">12 Hours</option>
-                      <option value="24">1 Day</option>
-                      <option value="72">3 Days</option>
-                    </select>
-                  </div>
-                </div>
-
-                <button class="continue-btn">
-                  <div class="coming-soon" style="color: aliceblue;">
-                    <i class="fas fa-lock"></i>
-                    Coming Soon
-                  </div>
-                </button>
+              </div>
+              <div class="games-note">
+                <span>Send Your Prayer!</span>
               </div>
             </div>
-          </div>
+          </ul>
         </div>
-
-        <!-- DEX Hub Card -->
-        <div class="service-card">
-          <div class="card-header-wrapper">
-            <div class="card-header">
-              <i class="fas fa-exchange-alt"></i>
-              <h2>Decentralized Exchange Hub</h2>
-            </div>
-            <div class="coming-soon">
-              <i class="fas fa-lock"></i>
-              Coming Soon
-            </div>
-          </div>
-          <div class="marketplace-info">
-            <p>
-              multi-functional platform engineered for
-              decentralized finance with integrity and innovation. Seamlessly
-              connect your wallet and explore a secure, transparent ecosystem
-              powered by the Rice Cracker God Coin community—where your financial
-              autonomy meets ethical opportunity.
-            </p>
-            <div class="note">
-              At Decentralized Exchange Hub, we're dedicated to delivering a
-              platform that balances profitability with principles. Privacy,
-              innovation, and community trust are at our core—ensuring your
-              journey in DeFi is not only rewarding but also responsibly
-              crafted.
-            </div>
-          </div>
-        </div>
-
-        <!-- Games Card -->
-        <div class="service-card">
-          <div class="card-header-wrapper">
-            <div class="card-header">
-              <i class="fas fa-gamepad"></i>
-              <h2>DeFi Games</h2>
-            </div>
-            <div class="coming-soon">
-              <i class="fas fa-lock"></i>
-              Coming Soon
-            </div>
-          </div>
-          <div class="marketplace-info">
-            <p>
-              The $RCGC token fuels an innovative gaming ecosystem, blending
-            entertainment with DeFi rewards.
-            </p>
-            <div class="note">
-                Engage in Player vs. House (PvH) lottery games, wagering $RCGC
-                tokens for a chance to win substantial prize pools. Transparent,
-                blockchain-verified draws ensure fairness. Or Compete in Player vs. Player (PvP) card games, using $RCGC as
-                the betting currency. Test your strategy and reap the rewards in
-                a decentralized arena.
-            </div>
-          </div>
-          <div class="games-note">
-            <span
-              >Vote your games idea in our community to shape the future project!</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <!-- Community Section -->
-      <section class="community">
-        <h2>Join the RICE CRACKER Community</h2>
-        <p>
-          Be part of the revolution in cryptocurrency bridging and enjoy our
-          upcoming services!
-        </p>
-        <div class="cta-buttons">
-          <button class="primary-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
-              <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
-            </svg>
-            Twitter
-          </button>
-          <button class="outline-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telegram" viewBox="0 0 16 16">
-              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.287 5.906q-1.168.486-4.666 2.01-.567.225-.595.442c-.03.243.275.339.69.47l.175.055c.408.133.958.288 1.243.294q.39.01.868-.32 3.269-2.206 3.374-2.23c.05-.012.12-.026.166.016s.042.12.037.141c-.03.129-1.227 1.241-1.846 1.817-.193.18-.33.307-.358.336a8 8 0 0 1-.188.186c-.38.366-.664.64.015 1.088.327.216.589.393.85.571.284.194.568.387.936.629q.14.092.27.187c.331.236.63.448.997.414.214-.02.435-.22.547-.82.265-1.417.786-4.486.906-5.751a1.4 1.4 0 0 0-.013-.315.34.34 0 0 0-.114-.217.53.53 0 0 0-.31-.093c-.3.005-.763.166-2.984 1.09"/>
-            </svg>
-            Telegram
-          </button>
-        </div>
-      </section>
     </main>
 
     <footer class="footer">
