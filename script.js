@@ -224,7 +224,7 @@ const whitepaperBtn = document.querySelector('.outline-btn');
 if (whitepaperBtn) {
   whitepaperBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    window.open('https://github.com/RiceCrackerGod/RiceCrackers/blob/main/Untitled.txt', '_blank');
+    window.open('https://t.me/+iUACzg6StEpkNjE1', '_blank');
   });
 }
 
