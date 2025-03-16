@@ -80,7 +80,6 @@ const getCurrentChapter = () => {
   if (match) {
     return {
       folderName: match[1],
-      chapterNumber: parseInt(match[2])
     };
   }
   return {
