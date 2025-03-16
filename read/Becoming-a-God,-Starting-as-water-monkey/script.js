@@ -106,7 +106,7 @@ function handlePrevious() {
 }
 
 function handleInfo() {
-  window.location.href = 'index.html';
+  window.location.href = '/';
 }
 
 // Initialize navigation buttons
