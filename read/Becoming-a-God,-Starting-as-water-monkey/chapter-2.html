@@ -55,13 +55,13 @@
         <div class="service-card">
           <!-- Create Comic title, chapter, chapter number, next button previous button, on title make click able when clicked go redirect to comic about -->
           <div class="comic-title">
-            <h3><a>Becoming a God, Starting as water monkey</a> <div class="token-info">Chapter 0</div></h3>
+            <h3 style="align-items: center; display: grid; grid-template-columns: repeat(2, auto);"><a id="chapter-title" style="align-self: center; text-align: center;">Becoming a God, Starting as Water Monkey</a><div id="chapter-number" class="token-info" style="display: flex; justify-content: flex-end;">Chapter 0</div></h3>
             <div class="hero-cta" style="display: grid; grid-template-columns: repeat(3, auto); gap: 10px;">
               <button id="prevBtn" class="primary-btn" onclick="handlePrevious()">
                 <i class="fas fa-arrow-left"></i>
                 Previous Chapter
               </button>
-              <button id="infoBtn" class="primary-btn" onclick="handleInfo()">
+              <button id="infoBtn" class="primary-btn" onclick="handleInfo(window.location.href = '/read/Becoming-a-God,-Starting-as-water-monkey.html')">
                 <i class="fas fa-info-circle"></i>
                 Info
               </button>
