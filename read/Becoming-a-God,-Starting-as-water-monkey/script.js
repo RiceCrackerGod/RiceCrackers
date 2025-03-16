@@ -105,10 +105,6 @@ function handlePrevious() {
   window.location.href = `chapter-${prevChapter}.html`;
 }
 
-function handleInfo() {
-  window.location.href = '/';
-}
-
 // Initialize navigation buttons
 window.onload = function() {
   const nextBtn = document.getElementById('nextBtn');
