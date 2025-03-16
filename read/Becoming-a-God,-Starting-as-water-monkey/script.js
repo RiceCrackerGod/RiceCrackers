@@ -72,18 +72,20 @@ if (continueBtn) {
   });
 }
 
-// Chapter Navigation
-// Get current chapter number from URL
-const getCurrentChapter = () => {
-  const path = window.location.pathname;
-  const match = path.match(/chapter-(\d+)/);
+// Function to extract folder name and chapter number from URL
+const getPathInfo = () => {
+  const path = window.location.pathname; // e.g., "/Becoming-a-God,-Starting-as-water-monkey/chapter-0.html"
+  const match = path.match(/([^/]+)\/chapter-(\d+)/); // Match folder and chapter
+  
   if (match) {
     return {
-      folderName: match[1],
+      folderName: match[1], // "Becoming-a-God,-Starting-as-water-monkey"
+      chapterNumber: parseInt(match[2]) // e.g., 0
     };
   }
   return {
     folderName: "Default Title",
+    chapterNumber: 0
   };
 };
 
@@ -99,19 +101,23 @@ const formatTitle = (str) => {
     .join(" ");
 };
 
-const currentChapter = getCurrentChapter();
+// Update the <a> with the formatted folder name
+document.getElementById('chapter-title').textContent = formatTitle(folderName);
 
-// Update the div with the current chapter number
-document.getElementById('chapter-number').textContent = `Chapter ${currentChapter}`;
+// Update the <div> with the current chapter number
+document.getElementById('chapter-number').textContent = `Chapter ${chapterNumber}`;
 
+// Navigation functions
 function handleNext() {
-  const nextChapter = currentChapter + 1;
-  window.location.href = `chapter-${nextChapter}.html`;
+  const nextChapter = chapterNumber + 1;
+  window.location.href = `/Becoming-a-God,-Starting-as-water-monkey/chapter-${nextChapter}.html`; // Adjust path as needed
 }
 
 function handlePrevious() {
-  const prevChapter = currentChapter - 1;
-  window.location.href = `chapter-${prevChapter}.html`;
+  const prevChapter = chapterNumber - 1;
+  if (prevChapter >= 0) { // Prevent going below chapter 0
+    window.location.href = `/Becoming-a-God,-Starting-as-water-monkey/chapter-${prevChapter}.html`;
+  }
 }
 
 // Scroll to Top Button
