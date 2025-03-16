@@ -72,28 +72,39 @@ if (continueBtn) {
   });
 }
 
-
-// Add market button functionality
-const pricebtn = document.querySelector('.price-display');
-if (pricebtn) {
-  pricebtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://polygonscan.com/token/0x9d6432b17Bf74b3645b85760be95F7bCB550AB60', '_blank');
-  });
-}
-
-
-
 // Chapter Navigation
 // Get current chapter number from URL
 const getCurrentChapter = () => {
   const path = window.location.pathname;
   const match = path.match(/chapter-(\d+)/);
-  return match ? parseInt(match[1]) : 0;
+  if (match) {
+    return {
+      folderName: match[1],
+      chapterNumber: parseInt(match[2])
+    };
+  }
+  return {
+    folderName: "Default Title",
+    chapterNumber: 0
+  };
+};
+
+// Get the path info
+const { folderName, chapterNumber } = getPathInfo();
+
+// Format the folder name
+const formatTitle = (str) => {
+  return str
+    .replace(/[-,]+/g, " ")
+    .split(" ")
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
 };
 
 const currentChapter = getCurrentChapter();
-const totalChapters = 1; // Update this as you add more chapters
+
+// Update the div with the current chapter number
+document.getElementById('chapter-number').textContent = `Chapter ${currentChapter}`;
 
 function handleNext() {
   const nextChapter = currentChapter + 1;
@@ -104,31 +115,6 @@ function handlePrevious() {
   const prevChapter = currentChapter - 1;
   window.location.href = `chapter-${prevChapter}.html`;
 }
-
-// Initialize navigation buttons
-window.onload = function() {
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const infoBtn = document.getElementById('infoBtn');
-
-  const hasNextChapter = currentChapter < totalChapters;
-  const hasPrevChapter = currentChapter > 0;
-
-  if (!hasNextChapter && !hasPrevChapter) {
-    nextBtn.style.display = 'none';
-    prevBtn.style.display = 'none';
-    infoBtn.style.display = 'inline-flex';
-  } else {
-    if (!hasNextChapter) {
-      nextBtn.style.display = 'none';
-      infoBtn.style.display = 'inline-flex';
-    }
-    if (!hasPrevChapter) {
-      prevBtn.style.display = 'none';
-      infoBtn.style.display = 'inline-flex';
-    }
-  }
-};
 
 // Scroll to Top Button
 const scrollTopBtn = document.getElementById('scrollTopBtn');
@@ -147,13 +133,3 @@ function scrollToTop() {
     behavior: 'smooth'
   });
 }
-
-// Initialize navigation buttons
-window.onload = function() {
-  if (currentChapter === 0) {
-    document.getElementById('prevBtn').style.display = 'none';
-  }
-  if (currentChapter === totalChapters) {
-    document.getElementById('nextBtn').style.display = 'none';
-  }
-};
