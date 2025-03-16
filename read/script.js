@@ -75,24 +75,24 @@ if (continueBtn) {
 // Configuration
 const totalChapters = 21; // Manually set: update as needed (0, 1, 2 = 3 chapters)
 
-// Detect fileName and chapterNumber from URL
+// Detect fileName and chapterNumber from URL parameters
 const getPathInfo = () => {
-  const path = window.location.pathname; // e.g., "/Becoming-a-God,-Starting-as-water-monkey.html" or "/Becoming-a-God,-Starting-as-water-monkey/chapter-1.html"
-  
-  // Extract fileName (everything before .html, excluding chapter part if present)
-  const chapterMatch = path.match(/chapter-(\d+)/);
-  let fileName = path;
-  if (chapterMatch) {
-    // If it's a chapter page, remove the chapter part to get the base fileName
-    fileName = path.split('/chapter-')[0].replace(/^\//, ''); // Remove leading slash
-  } else {
-    // If it's the main page, extract before .html
-    fileName = path.match(/([^/]+)\.html$/) ? path.match(/([^/]+)\.html$/)[1] : '';
+  const path = window.location.pathname; // e.g., "/read/Becoming-a-God,-Starting-as-water-monkey/chapter1"
+  const pathParts = path.split('/').filter(part => part); // Split and remove empty parts
+
+  // Expected format: /read/[fileName]/chapter[i]
+  let fileName = '';
+  let chapterNumber = 0;
+
+  if (pathParts.length >= 2 && pathParts[0] === 'read') {
+    fileName = pathParts[1]; // e.g., "Becoming-a-God,-Starting-as-water-monkey"
+    if (pathParts.length >= 3 && pathParts[2].startsWith('chapter')) {
+      const chapterMatch = pathParts[2].match(/chapter(\d+)/);
+      chapterNumber = chapterMatch ? parseInt(chapterMatch[1]) : 0;
+    }
   }
-  
+
   const folderName = fileName || 'default-folder'; // Use fileName as folderName, fallback if empty
-  const chapterNumber = chapterMatch ? parseInt(chapterMatch[1]) : 0; // 0 if no chapter in path
-  
   return { folderName, chapterNumber };
 };
 
@@ -118,7 +118,7 @@ const generateChapterList = () => {
     chapterItem.style.borderBottom = i > 0 ? "1px solid #eee" : "none";
 
     const chapterLink = document.createElement("a");
-    chapterLink.href = `/${folderName}/chapter-${i}.html`; // Universal: folderName matches fileName
+    chapterLink.href = `/read/${folderName}/chapter${i}`; // Updated format
     chapterLink.style.color = "#2c3e50";
     chapterLink.style.textDecoration = "none";
     chapterLink.style.fontWeight = "500";
