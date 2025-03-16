@@ -72,92 +72,69 @@ if (continueBtn) {
   });
 }
 
+// Configuration
+const totalChapters = 21; // Manually set: update as needed (0, 1, 2 = 3 chapters)
 
-// Add market button functionality
-const pricebtn = document.querySelector('.price-display');
-if (pricebtn) {
-  pricebtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://polygonscan.com/token/0x9d6432b17Bf74b3645b85760be95F7bCB550AB60', '_blank');
-  });
-}
-
-
-
-// Chapter Navigation
-// Get current chapter number from URL
-const getCurrentChapter = () => {
-  const path = window.location.pathname;
-  const match = path.match(/chapter-(\d+)/);
-  return match ? parseInt(match[1]) : 0;
-};
-
-const currentChapter = getCurrentChapter();
-const totalChapters = 1; // Update this as you add more chapters
-
-function handleNext() {
-  const nextChapter = currentChapter + 1;
-  window.location.href = `chapter-${nextChapter}.html`;
-}
-
-function handlePrevious() {
-  const prevChapter = currentChapter - 1;
-  window.location.href = `chapter-${prevChapter}.html`;
-}
-
-function handleInfo() {
-  window.location.href = 'index.html';
-}
-
-// Initialize navigation buttons
-window.onload = function() {
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const infoBtn = document.getElementById('infoBtn');
-
-  const hasNextChapter = currentChapter < totalChapters;
-  const hasPrevChapter = currentChapter > 0;
-
-  if (!hasNextChapter && !hasPrevChapter) {
-    nextBtn.style.display = 'none';
-    prevBtn.style.display = 'none';
-    infoBtn.style.display = 'inline-flex';
+// Detect fileName and chapterNumber from URL
+const getPathInfo = () => {
+  const path = window.location.pathname; // e.g., "/Becoming-a-God,-Starting-as-water-monkey.html" or "/Becoming-a-God,-Starting-as-water-monkey/chapter-1.html"
+  
+  // Extract fileName (everything before .html, excluding chapter part if present)
+  const chapterMatch = path.match(/chapter-(\d+)/);
+  let fileName = path;
+  if (chapterMatch) {
+    // If it's a chapter page, remove the chapter part to get the base fileName
+    fileName = path.split('/chapter-')[0].replace(/^\//, ''); // Remove leading slash
   } else {
-    if (!hasNextChapter) {
-      nextBtn.style.display = 'none';
-      infoBtn.style.display = 'inline-flex';
-    }
-    if (!hasPrevChapter) {
-      prevBtn.style.display = 'none';
-      infoBtn.style.display = 'inline-flex';
-    }
+    // If it's the main page, extract before .html
+    fileName = path.match(/([^/]+)\.html$/) ? path.match(/([^/]+)\.html$/)[1] : '';
+  }
+  
+  const folderName = fileName || 'default-folder'; // Use fileName as folderName, fallback if empty
+  const chapterNumber = chapterMatch ? parseInt(chapterMatch[1]) : 0; // 0 if no chapter in path
+  
+  return { folderName, chapterNumber };
+};
+
+const { folderName, chapterNumber } = getPathInfo();
+
+// Generate chapter list with dynamic folderName
+const generateChapterList = () => {
+  const chapterList = document.querySelector(".chapter-list");
+  if (!chapterList) return; // Exit if no chapter-list element
+  
+  chapterList.innerHTML = "";
+
+  const currentDate = new Date("2025-03-17"); // System date
+  const dateString = currentDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+
+  for (let i = totalChapters; i >= 0; i--) {
+    const chapterItem = document.createElement("div");
+    chapterItem.className = "chapter-item";
+    chapterItem.style.display = "grid";
+    chapterItem.style.gridTemplateColumns = "1fr 1fr";
+    chapterItem.style.alignItems = "center";
+    chapterItem.style.padding = "8px 10px";
+    chapterItem.style.borderBottom = i > 0 ? "1px solid #eee" : "none";
+
+    const chapterLink = document.createElement("a");
+    chapterLink.href = `/${folderName}/chapter-${i}.html`; // Universal: folderName matches fileName
+    chapterLink.style.color = "#2c3e50";
+    chapterLink.style.textDecoration = "none";
+    chapterLink.style.fontWeight = "500";
+    chapterLink.textContent = `Chapter ${i}`;
+
+    const chapterDate = document.createElement("span");
+    chapterDate.className = "chapter-date";
+    chapterDate.style.textAlign = "right";
+    chapterDate.style.color = "#7f8c8d";
+    chapterDate.style.fontSize = "0.9em";
+    chapterDate.textContent = dateString;
+
+    chapterItem.appendChild(chapterLink);
+    chapterItem.appendChild(chapterDate);
+    chapterList.appendChild(chapterItem);
   }
 };
 
-// Scroll to Top Button
-const scrollTopBtn = document.getElementById('scrollTopBtn');
-
-window.onscroll = function() {
-  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-    scrollTopBtn.style.display = 'block';
-  } else {
-    scrollTopBtn.style.display = 'none';
-  }
-};
-
-function scrollToTop() {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
-}
-
-// Initialize navigation buttons
-window.onload = function() {
-  if (currentChapter === 0) {
-    document.getElementById('prevBtn').style.display = 'none';
-  }
-  if (currentChapter === totalChapters) {
-    document.getElementById('nextBtn').style.display = 'none';
-  }
-};
+generateChapterList();

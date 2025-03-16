@@ -110,13 +110,18 @@ document.getElementById('chapter-number').textContent = `Chapter ${chapterNumber
 // Navigation functions
 function handleNext() {
   const nextChapter = chapterNumber + 1;
-  window.location.href = `/Becoming-a-God,-Starting-as-water-monkey/chapter-${nextChapter}.html`; // Adjust path as needed
+  window.location.href = `read/Becoming-a-God,-Starting-as-water-monkey/chapter-${nextChapter}.html`; // Adjust path as needed
+}
+
+// Navigation functions
+function handleInfo() {
+  window.location.href = `read/${folderName}html`; // Adjust path as needed
 }
 
 function handlePrevious() {
   const prevChapter = chapterNumber - 1;
   if (prevChapter >= 0) { // Prevent going below chapter 0
-    window.location.href = `/Becoming-a-God,-Starting-as-water-monkey/chapter-${prevChapter}.html`;
+    window.location.href = `read/Becoming-a-God,-Starting-as-water-monkey/chapter-${prevChapter}.html`;
   }
 }
 
