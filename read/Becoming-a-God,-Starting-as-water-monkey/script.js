@@ -85,7 +85,6 @@ const getCurrentChapter = () => {
   }
   return {
     folderName: "Default Title",
-    chapterNumber: 0
   };
 };
 
