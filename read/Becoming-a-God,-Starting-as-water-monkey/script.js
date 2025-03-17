@@ -27,86 +27,6 @@ function updateThemeIcon() {
 }
 
 
-// Add notification for the Continue button
-const continueBtn = document.querySelector('.continue-btn');
-if (continueBtn) {
-  continueBtn.addEventListener('click', () => {
-    // Create a notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = 'This feature will be soon available';
-
-    // Add notification styles
-    notification.style.position = 'fixed';
-    notification.style.bottom = '20px';
-    notification.style.right = '20px';
-    notification.style.backgroundColor = 'var(--primary)';
-    notification.style.color = 'white';
-    notification.style.padding = '12px 20px';
-    notification.style.borderRadius = '4px';
-    notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    notification.style.zIndex = '9999';
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateY(20px)';
-    notification.style.transition = 'opacity 0.3s, transform 0.3s';
-
-    // Add the notification to the document
-    document.body.appendChild(notification);
-
-    // Show the notification with animation
-    setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateY(0)';
-    }, 10);
-
-    // Remove the notification after 3 seconds
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateY(20px)';
-
-      // Remove from DOM after fade out
-      setTimeout(() => {
-        document.body.removeChild(notification);
-      }, 300);
-    }, 3000);
-  });
-}
-
-// Function to extract folder name and chapter number from URL
-const getPathInfo = () => {
-  const path = window.location.pathname; // e.g., "/Becoming-a-God,-Starting-as-water-monkey/chapter-0.html"
-  const match = path.match(/([^/]+)\/chapter-(\d+)/); // Match folder and chapter
-  
-  if (match) {
-    return {
-      folderName: match[1], // "Becoming-a-God,-Starting-as-water-monkey"
-      chapterNumber: parseInt(match[2]) // e.g., 0
-    };
-  }
-  return {
-    folderName: "Default Title",
-    chapterNumber: 0
-  };
-};
-
-// Get the path info
-const { folderName, chapterNumber } = getPathInfo();
-
-// Format the folder name
-const formatTitle = (str) => {
-  return str
-    .replace(/[-,]+/g, " ")
-    .split(" ")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-};
-
-// Update the <a> with the formatted folder name
-document.getElementById('chapter-title').textContent = formatTitle(folderName);
-
-// Update the <div> with the current chapter number
-document.getElementById('chapter-number').textContent = `Chapter ${chapterNumber}`;
-
 function handleLogo() {
   window.location.href = `/`; // Adjust path as needed
 }
@@ -146,3 +66,119 @@ function scrollToTop() {
     behavior: 'smooth'
   });
 }
+
+// Utility to normalize titles for consistent comparison
+const normalizeTitle = (str) => {
+  return str
+    .replace(/[-,]+/g, " ") // Replace hyphens and commas with spaces
+    .toLowerCase() // Convert to lowercase for case-insensitive comparison
+    .split(/\s+/) // Split on any whitespace
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+    .join(" "); // Join back with single spaces
+};
+
+// Function to extract folder name and chapter number from URL
+const getPathInfo = () => {
+  const path = window.location.pathname; // e.g., "/Becoming-a-God,-Starting-as-water-monkey/chapter-0.html"
+  const match = path.match(/\/([^/]+)\/chapter-(\d+)\.html$/i); // Match folder and chapter with .html
+
+  return match
+    ? {
+        folderName: match[1], // e.g., "Becoming-a-God,-Starting-as-water-monkey"
+        chapterNumber: parseInt(match[2], 10), // e.g., 0
+      }
+    : {
+        folderName: "Default Title",
+        chapterNumber: 0,
+      };
+};
+
+// Format title for display (not comparison)
+const formatTitleForDisplay = (str) => {
+  return normalizeTitle(str); // Reuse normalization for consistency
+};
+
+// Get path info
+const { folderName, chapterNumber } = getPathInfo();
+
+// Update DOM with title and chapter
+document.getElementById("chapter-title").textContent = formatTitleForDisplay(folderName);
+document.getElementById("chapter-number").textContent = `Chapter ${chapterNumber}`;
+
+async function loadComicImages() {
+  const comicReader = document.getElementById("read-comic");
+  comicReader.innerHTML = "Loading images...";
+
+  try {
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETUyK0Bsc1A6XMwF5ZiwvBlLvVLpNNHp-3MpM/exec"
+    );
+    if (!response.ok) {
+      throw new Error(`Network error: ${response.status} - ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("Fetched JSON:", data);
+
+    if (!data.manhwa_list || !Array.isArray(data.manhwa_list)) {
+      throw new Error("Invalid JSON structure: 'manhwa_list' missing or not an array");
+    }
+
+    const normalizedUrlTitle = normalizeTitle(folderName);
+    console.log("Normalized URL Title:", normalizedUrlTitle);
+
+    const matchingManhwa = data.manhwa_list.find((item) => {
+      const normalizedJsonTitle = normalizeTitle(item.title);
+      console.log("Comparing:", normalizedJsonTitle, "with", normalizedUrlTitle);
+      return normalizedJsonTitle === normalizedUrlTitle;
+    });
+
+    if (!matchingManhwa) {
+      comicReader.innerHTML = "No matching manhwa found.";
+      console.log("No match found in manhwa_list.");
+      return;
+    }
+
+    console.log("Matched Manhwa:", matchingManhwa);
+
+    const matchingChapter = matchingManhwa.chapters?.find(
+      (chapter) => chapter.chapter_number === chapterNumber
+    );
+
+    if (!matchingChapter || !Array.isArray(matchingChapter.images)) {
+      comicReader.innerHTML = "No images found for this chapter.";
+      console.log("No matching chapter or invalid images:", matchingChapter);
+      return;
+    }
+
+    console.log("Matched Chapter:", matchingChapter);
+
+    // Clear and populate comic reader
+    comicReader.innerHTML = "";
+    matchingChapter.images.forEach((imageUrl, index) => {
+      const imageDiv = document.createElement("div");
+      imageDiv.className = "comic-page";
+
+      const img = document.createElement("img");
+      img.src = imageUrl;
+      img.alt = `Chapter ${chapterNumber} Page ${index + 1}`;
+      img.style.maxWidth = "100%";
+      img.onerror = () => (img.src = "/path/to/fallback-image.jpg"); // Fallback for broken images
+
+      imageDiv.appendChild(img);
+
+      const adDiv = document.createElement("div");
+      adDiv.className = "banner-ad-container banner-ad";
+      adDiv.style.minHeight = "180px";
+      adDiv.innerHTML = "<!-- Banner Ad Placeholder -->";
+
+      comicReader.appendChild(imageDiv);
+      comicReader.appendChild(adDiv);
+    });
+  } catch (error) {
+    console.error("Error loading comic images:", error);
+    comicReader.innerHTML = "Error loading images. Please try again later.";
+  }
+}
+
+window.addEventListener("DOMContentLoaded", loadComicImages);

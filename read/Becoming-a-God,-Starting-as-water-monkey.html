@@ -23,10 +23,10 @@
 <body>
     <header class="header">
         <div class="container">
-            <div class="logo" onclick="handleLogo()">
+            <button class="logo" onclick="handleLogo()" style="background: transparent; border: none !important;">
                 <img src="logo.png" class="emoji" alt="Logo" width="40" height="40">
-                <h1 class="title">RICE CRACKER GOD PROJECT</h1>
-            </div>
+                <h1 class="title" style="color: #FF9C00;">RICE CRACKER GOD PROJECT</h1>
+            </button>
             <div class="actions">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                     <i class="fas fa-moon"></i>
@@ -36,24 +36,13 @@
     </header>
 
     <main class="container">
-      <h3><a>Becoming a God, Starting as water monkey</a></h3>
+      <h3 id="manhwa-title"><!-- Comic Title here --></h3>
         <!-- Main content split into cover and details -->
         <div class="comic-info" style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start;">
             <!-- Comic Cover Section -->
-            <div class="comic-cover" style="flex: 0 0 40%; max-width: 600px;">
-            <a href="#">
-                <img 
-                fetchpriority="high" 
-                width="300" 
-                height="450" 
-                src="https://mewingzone.com/wp-content/uploads/2025/02/2.jpg" 
-                srcset="https://mewingzone.com/wp-content/uploads/2025/02/2.jpg 600w, https://mewingzone.com/wp-content/uploads/2025/02/2-200x300.jpg 200w" 
-                sizes="(max-width: 600px) 100vw, 600px" 
-                class="img-responsive" 
-                alt="Becoming a God, Starting as Water Monkey Cover">
-            </a>
+            <div id="cover-image" class="comic-cover" style="flex: 0 0 40%; max-width: 300px;">
+                <!-- Generate Comic Cover here -->
             </div>
-
             <!-- Comic Details Section -->
             <div class="comic-details" style="flex: 1; align-self: center;">
             <div class="info-row">
@@ -61,22 +50,14 @@
                 <span class="info-value">5 Star Rating ★★★★★</span>
             </div>
             <div class="info-row">
-                <span class="info-label">Type:</span>
-                <span class="info-value">Manhua</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Release:</span>
-                <span class="info-value">2025</span>
-            </div>
-            <div class="info-row">
                 <span class="info-label">Status:</span>
                 <span class="info-value">OnGoing</span>
             </div>
-            <div class="description" style="text-align: justify; margin-top: 10px;">
-                El protagonista, Liang, transmigra a un mundo llamado el Gran Desierto. Estaba en una situación desesperada, accidentalmente despierta un sistema llamado "Sistema de linaje Ze", ¡y todo cambia a partir de ese momento! Al infundirse con los linajes de antiguas bestias divinas, el protagonista puede obtener un poder inmenso mientras refina gradualmente sus propios talentos divinos. ¡Ven! ¡Fúndete con el linaje del Espíritu Ze! Sistema: "Linaje despertado: Mono de agua". Protagonista: "???"
+            <div id="description" class="description" style="text-align: justify; margin-top: 10px;">
+                <!-- Generate Comic Description here -->
             </div>
             <div class="action-buttons" style="display: flex; justify-content: flex-end; margin-top: 15px;">
-                <button class="primary-btn" onclick="window.location.href='Becoming-a-God,-Starting-as-water-monkey/chapter-0'">Read First Chapter</button>
+                <button class="primary-btn" onclick="readFirstChapter()">Read First Chapter</button>
             </div>
             </div>
         </div>
@@ -86,15 +67,6 @@
         <div class="chapter-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: 5px;"></div>
       </div>
     </main>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="logo.png" class="emoji" alt="Logo" width="32" height="32">
-                <span>Water Monkey God</span>
-            </div>
-        </div>
-    </footer>
 
     <script src="script.js"></script>
 </body>

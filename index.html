@@ -1,51 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RICE CRACKER GOD PROJECT</title>
-    <!-- Favicon -->
-    <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-    <link rel="mask-icon" href="logo.png" color="#FF9C00">
-    <meta name="msapplication-TileImage" content="logo.png">
-    <meta name="msapplication-TileColor" content="#FF9C00">
-    <meta name="theme-color" content="#FF9C00">
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <header class="header">
-      <div class="container">
-        <div class="logo">
-          <img
-            src="logo.png"
-            class="emoji"
-            alt="Rice Cracker Logo"
-            width="40"
-            height="40"
-          />
-          <h1 class="title">RICE CRACKER GOD PROJECT</h1>
-        </div>
-        <div class="actions">
-          <button
-            id="theme-toggle"
-            class="theme-toggle"
-            aria-label="Toggle theme"
-          >
-            <i class="fas fa-moon">   </i>
-          </button>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RICE CRACKER GOD PROJECT</title>
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+  <link rel="mask-icon" href="logo.png" color="#FF9C00">
+  <meta name="msapplication-TileImage" content="logo.png">
+  <meta name="msapplication-TileColor" content="#FF9C00">
+  <meta name="theme-color" content="#FF9C00">
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <img src="logo.png" class="emoji" alt="Rice Cracker Logo" width="40" height="40" />
+        <h1 class="title">RICE CRACKER GOD PROJECT</h1>
       </div>
-    </header>  
-    <main class="container">
-    <!-- Services Section -->
+      <div class="actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
     <!-- Donation Button -->
     <button class="donation-button-info" onclick="openDonationInfo()">
       <i class="fas fa-mug-hot"></i>
@@ -53,7 +40,6 @@
 
     <!-- Donation Info Section -->
     <div id="donation-info" class="services-vertical" style="display: none;">
-      <!-- Crypto Coin Address Card -->
       <div class="service-card">
         <div class="card-header-wrapper">
           <div class="card-header">
@@ -72,8 +58,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Wealth Story Card -->
       <div class="service-card">
         <div class="card-header-wrapper">
           <div class="card-header">
@@ -83,7 +67,7 @@
         </div>
         <div class="marketplace-info">
           <div class="note">
-            Inspired by Story of Cai Shen Ye, the Chinese God of Wealth, our in house crypto project embodies the values of prosperity, generosity, and abundance. Just as Cai Shen Ye distributes wealth and fortune, Rice Cracker God Coin aims to create opportunities and value across multiple blockchain ecosystems. The humble rice cracker, transformed into a divine symbol of wealth, represents our mission to elevate everyday liquidations into opportunities for prosperity.
+            Inspired by Story of Cai Shen Ye, the Chinese God of Wealth, our in-house crypto project embodies the values of prosperity, generosity, and abundance. Just as Cai Shen Ye distributes wealth and fortune, Rice Cracker God Coin aims to create opportunities and value across multiple blockchain ecosystems. The humble rice cracker, transformed into a divine symbol of wealth, represents our mission to elevate everyday liquidations into opportunities for prosperity.
           </div>
         </div>
         <div class="games-note">
@@ -92,27 +76,17 @@
       </div>
     </div>
 
-    <!-- the latest project and announcement of this web -->
-    <div class="announcement" style="max-height: 60vh;">
-      <div class="service-card" style="align-items: center; display: grid; grid-template-columns: repeat(2, auto);">
-        <ul class="feature-list" style="align-self: center; margin: 0">
-          <a href="#">
-            <img 
-            fetchpriority="high" 
-            width="200" 
-            height="275" 
-            src="https://mewingzone.com/wp-content/uploads/2025/02/2.jpg" 
-            srcset="https://mewingzone.com/wp-content/uploads/2025/02/2.jpg 600w, https://mewingzone.com/wp-content/uploads/2025/02/2-200x300.jpg 200w" 
-            sizes="(max-width: 600px) 100vw, 600px" 
-            class="img-responsive" 
-            alt="Becoming a God, Starting as Water Monkey Cover">
-        </a>
+    <!-- Announcement Section -->
+    <div>
+      <div class="service-card">
+        <ul id="latest-manhwa" class="feature-list">
+          <!-- Latest manhwa item will be inserted here dynamically -->
         </ul>
-        <div class="marketplace-info" style="display: flex; flex-grow: 1; overflow: auto; flex-direction: column; justify-content: center; align-items: center; margin: 25px; width: auto; height: auto; max-height: 100%; text-align: center;">
+        <div class="marketplace-info">
           <h2>Enjoy Our Comic Project, Don't Forget to Share This Website</h2>
-          <h3>Our Commitment is Delivering Great Manhwa/Donghua Content with No Pop Up Ads Stay Tune and Follow Us On Twitter</h3>
+          <h3>Our Commitment is Delivering Great Manhwa/Donghua Content with No Pop Up Ads. Stay Tuned and Follow Us On Twitter</h3>
           <button class="primary-btn" onclick="twitter()">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-twitter-x" viewBox="0 0 16 16">
               <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"></path>
             </svg>
             Twitter
@@ -120,90 +94,13 @@
         </div>
       </div>
     </div>
-    <!-- the project of this web -->
-    <div class="service-card" style="display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(4, auto); gap: 20px; padding: 20px;">
-      <div class="title-cell" style="color: black;">Read</div>
-      <div class="content-cell">
-          <img src="image1.jpg" alt="Image 1">
-          <h3>Content Title 1</h3>
-          <p>Chapter content 1 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image2.jpg" alt="Image 2">
-          <h3>Content Title 2</h3>
-          <p>Chapter content 2 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image3.jpg" alt="Image 3">
-          <h3>Content Title 3</h3>
-          <p>Chapter content 3 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image4.jpg" alt="Image 4">
-          <h3>Content Title 4</h3>
-          <p>Chapter content 4 goes here</p>
-      </div>
-      <!-- Row 2 -->
-      <div class="content-cell">
-          <img src="image5.jpg" alt="Image 5">
-          <h3>Content Title 5</h3>
-          <p>Chapter content 5 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image6.jpg" alt="Image 6">
-          <h3>Content Title 6</h3>
-          <p>Chapter content 6 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image7.jpg" alt="Image 7">
-          <h3>Content Title 7</h3>
-          <p>Chapter content 7 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image8.jpg" alt="Image 8">
-          <h3>Content Title 8</h3>
-          <p>Chapter content 8 goes here</p>
-      </div>
-      <!-- Row 3 -->
-      <div class="content-cell">
-          <img src="image9.jpg" alt="Image 9">
-          <h3>Content Title 9</h3>
-          <p>Chapter content 9 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image10.jpg" alt="Image 10">
-          <h3>Content Title 10</h3>
-          <p>Chapter content 10 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image11.jpg" alt="Image 11">
-          <h3>Content Title 11</h3>
-          <p>Chapter content 11 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image12.jpg" alt="Image 12">
-          <h3>Content Title 12</h3>
-          <p>Chapter content 12 goes here</p>
-      </div>
-      <!-- Row 4 -->
-      <div class="content-cell">
-          <img src="image13.jpg" alt="Image 13">
-          <h3>Content Title 13</h3>
-          <p>Chapter content 13 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image14.jpg" alt="Image 14">
-          <h3>Content Title 14</h3>
-          <p>Chapter content 14 goes here</p>
-      </div>
-      <div class="content-cell">
-          <img src="image15.jpg" alt="Image 15">
-          <h3>Content Title 15</h3>
-          <p>Chapter content 15 goes here</p>
-      </div>
-  </div>
-    </main>
 
-    <script src="script.js"></script>
-  </body>
+    <!-- Project Grid Section -->
+    <div id="manhwa-container" class="service-card project-grid">
+      <div class="title-cell" style="color: black;"><p>Reading Material</p></div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>

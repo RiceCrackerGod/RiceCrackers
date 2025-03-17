@@ -26,119 +26,158 @@ function updateThemeIcon() {
   }
 }
 
-
-// Add notification for the Continue button
-const continueBtn = document.querySelector('.continue-btn');
-if (continueBtn) {
-  continueBtn.addEventListener('click', () => {
-    // Create a notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = 'This feature will be soon available';
-
-    // Add notification styles
-    notification.style.position = 'fixed';
-    notification.style.bottom = '20px';
-    notification.style.right = '20px';
-    notification.style.backgroundColor = 'var(--primary)';
-    notification.style.color = 'white';
-    notification.style.padding = '12px 20px';
-    notification.style.borderRadius = '4px';
-    notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    notification.style.zIndex = '9999';
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateY(20px)';
-    notification.style.transition = 'opacity 0.3s, transform 0.3s';
-
-    // Add the notification to the document
-    document.body.appendChild(notification);
-
-    // Show the notification with animation
-    setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateY(0)';
-    }, 10);
-
-    // Remove the notification after 3 seconds
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateY(20px)';
-
-      // Remove from DOM after fade out
-      setTimeout(() => {
-        document.body.removeChild(notification);
-      }, 300);
-    }, 3000);
-  });
-}
-
-// Configuration
-const totalChapters = 21; // Manually set: update as needed (0, 1, 2 = 3 chapters)
-
-// Detect fileName and chapterNumber from URL parameters
+// Function to extract path info (title and chapter number)
 const getPathInfo = () => {
-  const path = window.location.pathname; // e.g., "/read/Becoming-a-God,-Starting-as-water-monkey/chapter1"
-  const pathParts = path.split('/').filter(part => part); // Split and remove empty parts
-
-  // Expected format: /read/[fileName]/chapter[i]
-  let fileName = '';
-  let chapterNumber = 0;
-
-  if (pathParts.length >= 2 && pathParts[0] === 'read') {
-    fileName = pathParts[1]; // e.g., "Becoming-a-God,-Starting-as-water-monkey"
-    if (pathParts.length >= 3 && pathParts[2].startsWith('chapter')) {
-      const chapterMatch = pathParts[2].match(/chapter(\d+)/);
-      chapterNumber = chapterMatch ? parseInt(chapterMatch[1]) : 0;
-    }
-  }
-
-  const folderName = fileName || 'default-folder'; // Use fileName as folderName, fallback if empty
-  return { folderName, chapterNumber };
-};
-
-const { folderName, chapterNumber } = getPathInfo();
-
-// Generate chapter list with dynamic folderName
-const generateChapterList = () => {
-  const chapterList = document.querySelector(".chapter-list");
-  if (!chapterList) return; // Exit if no chapter-list element
+  const path = window.location.pathname; // e.g., "/read/Becoming-a-God,-Starting-as-water-monkey/chapter-0.html"
+  const match = path.match(/\/read\/([^/]+)(?:\/chapter-(\d+))?\.html$/);
   
-  chapterList.innerHTML = "";
+  if (match) {
+    return {
+      pageFilename: match[1].toLowerCase(), // "becoming-a-god,-starting-as-water-monkey"
+      chapterNumber: match[2] ? parseInt(match[2]) : null // 0 or null if no chapter
+    };
+  }
+  return { pageFilename: null, chapterNumber: null };
+};
 
-  const currentDate = new Date("2025-03-17"); // System date
-  const dateString = currentDate.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-
-  for (let i = totalChapters; i >= 0; i--) {
-    const chapterItem = document.createElement("div");
-    chapterItem.className = "chapter-item";
-    chapterItem.style.display = "grid";
-    chapterItem.style.gridTemplateColumns = "1fr 1fr";
-    chapterItem.style.alignItems = "center";
-    chapterItem.style.padding = "8px 10px";
-    chapterItem.style.borderBottom = i > 0 ? "1px solid #eee" : "none";
-
-    const chapterLink = document.createElement("a");
-    chapterLink.href = `/read/${folderName}/chapter${i}`; // Updated format
-    chapterLink.style.color = "#2c3e50";
-    chapterLink.style.textDecoration = "none";
-    chapterLink.style.fontWeight = "500";
-    chapterLink.textContent = `Chapter ${i}`;
-
-    const chapterDate = document.createElement("span");
-    chapterDate.className = "chapter-date";
-    chapterDate.style.textAlign = "right";
-    chapterDate.style.color = "#7f8c8d";
-    chapterDate.style.fontSize = "0.9em";
-    chapterDate.textContent = dateString;
-
-    chapterItem.appendChild(chapterLink);
-    chapterItem.appendChild(chapterDate);
-    chapterList.appendChild(chapterItem);
+// Function to create comic reader structure
+const createComicReader = (imageUrls) => {
+  const container = document.getElementById('read-comic');
+  if (!container) return; // Exit if no container exists
+  
+  container.innerHTML = '<p>Loading images...</p><img src="/path/to/loading.gif" alt="Loading..." class="loading-image">'; // Add loading state
+  
+  imageUrls.forEach((url, index) => {
+    const pageDiv = document.createElement('div');
+    pageDiv.className = 'page-break no-gaps';
+    pageDiv.innerHTML = `
+      <img id="image-${index}" src="${url}" class="wp-manga-chapter-img" alt="Chapter image ${index + 1}" 
+           onload="this.parentElement.parentElement.querySelector('.loading-image')?.remove();"
+           onerror="this.src='/path/to/error-image.jpg'; this.nextElementSibling.style.display='block';">
+      <p style="display:none; color:red;">Failed to load image</p>
+    `;
+    container.appendChild(pageDiv);
+  });
+  
+  // Remove initial loading text after first image loads or fails
+  const firstImage = container.querySelector('img');
+  if (firstImage) {
+    firstImage.onload = () => container.querySelector('p')?.remove();
+    firstImage.onerror = () => container.querySelector('p').textContent = 'Error loading images';
   }
 };
 
-generateChapterList();
+document.addEventListener('DOMContentLoaded', function() {
+  const { pageFilename, chapterNumber } = getPathInfo();
+  console.log('Path info:', { pageFilename, chapterNumber });
+
+  const apiUrl = "https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETUyK0Bsc1A6XMwF5ZiwvBlLvVLpNNHp-3MpM/exec";
+  
+  // Manhwa detail page elements
+  const titleElement = document.getElementById("manhwa-title");
+  const coverElement = document.getElementById("cover-image");
+  const descriptionElement = document.getElementById("description");
+  const chapterListElement = document.querySelector(".chapter-list");
+
+  // Show loading state for manhwa details if elements exist
+  if (titleElement) titleElement.textContent = "Loading...";
+  if (descriptionElement) descriptionElement.textContent = "Loading comic details...";
+
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+      return response.json();
+    })
+    .then(data => {
+      console.log("Data received:", data);
+      if (!data || !Array.isArray(data.manhwa_list)) {
+        throw new Error("Invalid JSON data structure: 'manhwa_list' missing or not an array");
+      }
+
+      const manhwa = data.manhwa_list.find(m => {
+        const normalizedTitle = m.title.replace(/\s+/g, "-").toLowerCase();
+        return normalizedTitle === pageFilename && m.cover_image && m.description;
+      });
+
+      if (!manhwa) {
+        throw new Error(`Manhwa not found with cover image and description. Looking for: ${pageFilename}`);
+      }
+
+      // Update manhwa details if on a detail page
+      if (titleElement) titleElement.textContent = manhwa.title;
+      if (coverElement) {
+        const imgElement = document.createElement("img");
+        imgElement.src = manhwa.cover_image;
+        imgElement.alt = `${manhwa.title} Cover`;
+        imgElement.className = "cover-img";
+        coverElement.innerHTML = "";
+        coverElement.appendChild(imgElement);
+      }
+      if (descriptionElement) descriptionElement.textContent = manhwa.description;
+
+      // Update chapter list if on a detail page
+      if (chapterListElement && manhwa.chapters && Array.isArray(manhwa.chapters) && manhwa.chapters.length > 0) {
+        const sortedChapters = [...manhwa.chapters].sort((a, b) => b.chapter_number - a.chapter_number);
+        chapterListElement.innerHTML = "";
+        
+        sortedChapters.forEach((chapter, index) => {
+          const div = document.createElement("div");
+          div.className = "chapter-item";
+          div.style.display = "grid";
+          div.style.gridTemplateColumns = "1fr 1fr";
+          div.style.alignItems = "center";
+          div.style.padding = "8px 10px";
+          div.style.borderBottom = index < sortedChapters.length - 1 ? "1px solid #eee" : "none";
+          
+          const chapterLink = document.createElement("a");
+          chapterLink.href = `/read/${pageFilename}/chapter-${chapter.chapter_number}.html`;
+          chapterLink.style.color = "#2c3e50";
+          chapterLink.style.textDecoration = "none";
+          chapterLink.style.fontWeight = "500";
+          chapterLink.textContent = `Chapter-${chapter.chapter_number}`;
+          
+          const chapterDate = document.createElement("span");
+          chapterDate.className = "chapter-date";
+          chapterDate.style.textAlign = "right";
+          chapterDate.style.color = "#7f8c8d";
+          chapterDate.style.fontSize = "0.9em";
+          chapterDate.textContent = chapter.date || "No date";
+          
+          div.appendChild(chapterLink);
+          div.appendChild(chapterDate);
+          chapterListElement.appendChild(div);
+        });
+      } else if (chapterListElement) {
+        chapterListElement.innerHTML = "<div>No chapters available</div>";
+      }
+
+      // Handle chapter page (generate images)
+      if (chapterNumber !== null && document.getElementById('read-comic')) {
+        const chapter = manhwa.chapters.find(ch => ch.chapter_number === chapterNumber);
+        if (chapter && chapter.image_urls) {
+          console.log('Chapter found:', chapter);
+          const imageUrls = chapter.image_urls.split(','); // Assuming image_urls is a comma-separated string
+          createComicReader(imageUrls);
+        } else {
+          document.getElementById('read-comic').innerHTML = '<p>No images available for this chapter</p>';
+        }
+      }
+    })
+    .catch(error => {
+      console.error("Error fetching or processing data:", error);
+      if (titleElement) titleElement.textContent = "Error";
+      if (descriptionElement) descriptionElement.textContent = `Error loading manhwa data: ${error.message}`;
+      if (chapterListElement) chapterListElement.innerHTML = "<div>Failed to load chapters</div>";
+      if (document.getElementById('read-comic')) {
+        document.getElementById('read-comic').innerHTML = `<p>Error loading comic images: ${error.message}</p>`;
+      }
+    });
+});
 
 function handleLogo() {
-  window.location.href = `/`; // Adjust path as needed
+  window.location.href = `/`;
+}
+
+function readFirstChapter() {
+  window.location.href = 'Becoming-a-God,-Starting-as-water-monkey/chapter-0';
 }

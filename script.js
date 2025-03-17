@@ -130,3 +130,70 @@ function showNotification(message) {
 function twitter() {
   window.location.href = `https://x.com/ricecrackergod`; 
 }
+
+fetch('https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETUyK0Bsc1A6XMwF5ZiwvBlLvVLpNNHp-3MpM/exec')
+.then(response => response.json())
+.then(data => {
+    const manhwaList = data.manhwa_list;
+    const manhwaContainer = document.getElementById("manhwa-container");
+    const latestContainer = document.getElementById("latest-manhwa");
+
+    // Step 1: Group manhwa by title and find the max chapter number
+    const titleMap = new Map();
+
+    manhwaList.forEach(manhwa => {
+        const title = manhwa.title;
+        const maxChapter = manhwa.chapters.length > 0 
+            ? Math.max(...manhwa.chapters.map(ch => ch.chapter_number)) 
+            : "N/A";
+
+        if (titleMap.has(title)) {
+            const existing = titleMap.get(title);
+            if (maxChapter !== "N/A" && (existing.maxChapter === "N/A" || maxChapter > existing.maxChapter)) {
+                titleMap.set(title, { ...existing, maxChapter, cover_image: manhwa.cover_image || existing.cover_image });
+            }
+        } else {
+            titleMap.set(title, {
+                title,
+                maxChapter,
+                cover_image: manhwa.cover_image || "https://via.placeholder.com/200"
+            });
+        }
+    });
+
+    // Step 2: Convert titleMap to array and determine the latest manhwa
+    const titleArray = Array.from(titleMap.values());
+    const latestManhwa = titleArray.pop(); // Last unique title is the latest
+    const otherManhwas = titleArray; // All other titles
+
+    // Step 3: Populate #manhwa-container with other manhwas
+    otherManhwas.forEach(manhwa => {
+        const div = document.createElement("div");
+        div.style.cssText = "display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 200px; max-height: 270px; padding: 5px; box-sizing: border-box; flex: 1;";
+        div.innerHTML = `
+            <img src="${manhwa.cover_image}" style="width: 150px; height: 200px; object-fit: cover; display: block; margin: 2px auto;">
+            <h4 style="font-size: clamp(0.6rem, 1.5vw, 1rem); margin: 2px 0; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-wrap:wrap; transform: scale(0.8);">${manhwa.title}</h4>
+            <a href="${manhwa.title.replace(/\s+/g, '-').toLowerCase()}/Chapter-${manhwa.maxChapter}" style="text-align: center; margin: 2px 0; flex: 1;">
+                <p style="font-size: clamp(0.7rem, 1.2vw, 0.875rem); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Latest Chapter: ${manhwa.maxChapter}</p>
+            </a>
+            <hr style="width: 80%; margin: 2px auto;">
+        `;
+        manhwaContainer.appendChild(div);
+    });
+
+    // Step 4: Populate #latest-manhwa with the latest manhwa
+    if (latestManhwa) {
+        const div = document.createElement("div");
+        div.style.cssText = "display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 200px; max-height: 270px; padding: 5px; box-sizing: border-box; flex: 1;";
+        div.innerHTML = `
+            <img src="${latestManhwa.cover_image}" style="width: 150px; height: 200px; object-fit: cover; display: block; margin: 2px auto;">
+            <h4 style="font-size: clamp(0.6rem, 1.5vw, 1rem); margin: 2px 0; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-wrap:wrap; transform: scale(0.8);">${latestManhwa.title}</h4>
+            <a href="${latestManhwa.title.replace(/\s+/g, '-').toLowerCase()}/Chapter-${latestManhwa.maxChapter}" style="text-align: center; margin: 2px 0; flex: 1;">
+                <p style="font-size: clamp(0.7rem, 1.2vw, 0.875rem); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Latest Chapter: ${latestManhwa.maxChapter}</p>
+            </a>
+            <hr style="width: 80%; margin: 2px auto;">
+        `;
+        latestContainer.appendChild(div);
+    }
+})
+.catch(error => console.error("Error fetching JSON:", error));
