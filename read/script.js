@@ -138,3 +138,7 @@ const generateChapterList = () => {
 };
 
 generateChapterList();
+
+function handleLogo() {
+  window.location.href = `/`; // Adjust path as needed
+}

@@ -377,7 +377,6 @@ ul {
 }
 
 .price-display:hover::after {
-  content: "View on Polyscan →";
   position: absolute;
   bottom: 0;
   right: 0;
@@ -867,42 +866,145 @@ ul {
   margin-top: 1rem;
 }
 
-/* Add after the existing styles */
-
-.address-actions-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 8px;
-}
-
-.address-actions-container .add-address-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--primary);
+/* Donation Button */
+.donation-button-info {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary); /* Use theme primary color (#FF9C00) */
+  color: white; /* Stays white for contrast */
+  border: none;
+  border-radius: 50%;
   cursor: pointer;
-}
-
-.address-actions-container .add-address-btn:hover {
-  text-decoration: underline;
-}
-
-.receive-usd-checkbox {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--muted-foreground);
+  z-index: 999;
+  transition: background-color 0.2s;
 }
 
-.receive-usd-checkbox input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+.donation-button-info:hover {
+  background-color: var(--primary-dark); /* Darker shade for hover */
 }
+
+.donation-button-info i {
+  font-size: 1.5rem;
+}
+
+/* Donation Info Section */
+.services-vertical {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: var(--card); /* Matches card background for light/dark */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 998;
+  overflow-y: auto;
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+  .services-vertical {
+    width: 50%;
+    height: 80vh;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 767px) {
+  .services-vertical {
+    width: 100%;
+    height: 80vh;
+  }
+}
+
+/* Service Card Styling */
+.service-card {
+  padding: 20px;
+  margin: 10px;
+  background-color: var(--card); /* Matches theme card background */
+  color: var(--card-foreground); /* Matches theme text color */
+}
+
+/* Make contract-address clickable and readable */
+.contract-address {
+  font-family: monospace;
+  font-size: 0.85rem;
+  background-color: var(--card); /* Matches card background */
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+  word-break: break-all;
+  position: relative;
+  transition: background-color 0.2s;
+  cursor: pointer; /* Indicates clickability */
+}
+
+.contract-address:hover {
+  background-color: rgba(var(--primary), 0.1); /* Subtle highlight on hover */
+}
+
+/* Notification Styling */
+.notification {
+  position: fixed;
+  bottom: 130px; /* Above the donation button (100px height + 20px bottom + 10px gap) */
+  right: 130px; /* Slightly left of the button */
+  background-color: var(--primary); /* Matches your theme */
+  color: white;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 0.9rem;
+  z-index: 1000; /* Above everything else */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.notification.show {
+  opacity: 1;
+}
+
+/* Adjust for mobile */
+@media (max-width: 767px) {
+  .notification {
+    right: 20px; /* Align with button on mobile */
+    bottom: 120px;
+  }
+}
+ 
+  .title-cell {
+      grid-column: 1 / span 5; /* Spans all 5 columns */
+      grid-row: 1; /* First row */
+      text-align: center;
+      font-size: 24px;
+      padding: 20px;
+      background-color: #f0f0f0;
+  }
+  
+  .content-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      border: 1px solid #ddd;
+  }
+  
+  .content-cell img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+  }
+  
+  .content-cell h3 {
+      margin: 10px 0;
+      font-size: 18px;
+  }
+  
+  .content-cell p {
+      margin: 0;
+      text-align: center;
+  }
+
+  

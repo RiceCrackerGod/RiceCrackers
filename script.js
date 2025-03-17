@@ -27,76 +27,8 @@ function updateThemeIcon() {
 }
 
 
-// Add notification for the Continue button
-const continueBtn = document.querySelector('.continue-btn');
-if (continueBtn) {
-  continueBtn.addEventListener('click', () => {
-    // Create a notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = 'This feature will be soon available';
-    
-    // Add notification styles
-    notification.style.position = 'fixed';
-    notification.style.bottom = '20px';
-    notification.style.right = '20px';
-    notification.style.backgroundColor = 'var(--primary)';
-    notification.style.color = 'white';
-    notification.style.padding = '12px 20px';
-    notification.style.borderRadius = '4px';
-    notification.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
-    notification.style.zIndex = '9999';
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateY(20px)';
-    notification.style.transition = 'opacity 0.3s, transform 0.3s';
-    
-    // Add the notification to the document
-    document.body.appendChild(notification);
-    
-    // Show the notification with animation
-    setTimeout(() => {
-      notification.style.opacity = '1';
-      notification.style.transform = 'translateY(0)';
-    }, 10);
-    
-    // Remove the notification after 3 seconds
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      notification.style.transform = 'translateY(20px)';
-      
-      // Remove from DOM after fade out
-      setTimeout(() => {
-        document.body.removeChild(notification);
-      }, 300);
-    }, 3000);
-  });
-}
-
-// Add share button functionality
-const shareBtn = document.querySelector('.primary-btn');
-if (shareBtn) {
-  shareBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://x.com/ricecrackergod', '_blank');
-  });
-}
-
-// Add market button functionality
-const marketBtn = document.querySelector('.hero-image');
-if (marketBtn) {
-  marketBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://x.com/ricecrackergod', '_blank');
-  });
-}
-
-// Add market button functionality
-const pricebtn = document.querySelector('.price-display');
-if (pricebtn) {
-  pricebtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.open('https://polygonscan.com/token/0x9d6432b17Bf74b3645b85760be95F7bCB550AB60', '_blank');
-  });
+function openDonationInfo() {
+  window.location.href = `/`; // Adjust path as needed
 }
 
 // Add animations when scrolling into view
@@ -131,3 +63,70 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+function openDonationInfo() {
+  const donationInfo = document.getElementById('donation-info');
+  if (donationInfo.style.display === 'none' || donationInfo.style.display === '') {
+    donationInfo.style.display = 'block';
+  } else {
+    donationInfo.style.display = 'none';
+  }
+}
+
+
+// Copy Contract Address on Click with Notification
+document.querySelectorAll('.contract-address').forEach(address => {
+  address.addEventListener('click', () => {
+    // Extract text before and after ": "
+    const fullText = address.textContent;
+    const [cryptoName, cryptoAddress] = fullText.split(': ').map(part => part.trim());
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(cryptoAddress)
+      .then(() => {
+        // Visual feedback on the address
+        address.style.backgroundColor = 'rgba(var(--primary), 0.3)';
+        setTimeout(() => {
+          address.style.backgroundColor = 'var(--card)';
+        }, 500);
+
+        // Create and show notification
+        showNotification(`${cryptoName} Copied`);
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  });
+});
+
+// Notification Function
+function showNotification(message) {
+  // Remove existing notification if any
+  const existingNotification = document.querySelector('.notification');
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+
+  // Create new notification
+  const notification = document.createElement('div');
+  notification.className = 'notification';
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  // Show notification
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 10); // Small delay to trigger transition
+
+  // Hide and remove after 2 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      notification.remove();
+    }, 300); // Match transition duration
+  }, 2000);
+}
+
+function twitter() {
+  window.location.href = `https://x.com/ricecrackergod`; 
+}

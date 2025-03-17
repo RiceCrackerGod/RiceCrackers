@@ -107,6 +107,10 @@ document.getElementById('chapter-title').textContent = formatTitle(folderName);
 // Update the <div> with the current chapter number
 document.getElementById('chapter-number').textContent = `Chapter ${chapterNumber}`;
 
+function handleLogo() {
+  window.location.href = `/`; // Adjust path as needed
+}
+
 // Navigation functions
 function handleNext() {
   const nextChapter = chapterNumber + 1;
@@ -115,7 +119,7 @@ function handleNext() {
 
 // Navigation functions
 function handleInfo() {
-  window.location.href = `/${folderName}`; // Adjust path as needed
+  window.location.href = `read/${folderName}`; // Adjust path as needed
 }
 
 function handlePrevious() {
