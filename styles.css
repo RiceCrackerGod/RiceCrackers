@@ -468,122 +468,71 @@ ul {
   font-style: italic;
   margin-top: 1rem;
 }
-
 /* Project Grid */
 .project-grid {
   display: grid;
-  /* Responsive columns: auto-fit with min/max width */
-  grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 30vw, 300px), 1fr));
-  /* Auto rows for natural flow */
+  /* Switch to responsive columns: min 250px, max 1fr */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  /* Simplify rows to auto */
   grid-template-rows: auto;
   /* Responsive gap */
-  gap: clamp(8px, 2vw, 20px);
+  gap: clamp(10px, 2vw, 20px);
   /* Contain within parent */
-  padding: clamp(8px, 2vw, 20px);
+  padding: clamp(10px, 2vw, 20px);
   margin: 0 auto;
   width: 100%;
   max-width: 100%; /* Prevent overflow */
   box-sizing: border-box;
-  /* Smooth transitions for resizing */
-  transition: gap 0.3s ease, padding 0.3s ease;
 }
 
 /* Title Cell */
 .title-cell {
-  /* Span all columns dynamically */
+  /* Span all columns responsively */
   grid-column: 1 / -1;
   grid-row: 1;
   text-align: center;
   /* Responsive font size */
-  font-size: clamp(16px, 3vw, 24px);
+  font-size: clamp(18px, 4vw, 24px);
   /* Responsive padding */
-  padding: clamp(10px, 2.5vw, 20px);
+  padding: clamp(10px, 2vw, 20px);
   background-color: #f0f0f0;
+  /* Ensure it fits container */
   width: 100%;
   box-sizing: border-box;
-  /* Smooth font size transition */
-  transition: font-size 0.3s ease, padding 0.3s ease;
 }
 
-/* Content Cell */
-.content-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: clamp(8px, 1.5vw, 15px);
-  border: 1px solid #ddd;
-  width: 100%;
-  box-sizing: border-box;
-  /* Ensure content scales */
-  min-height: 0; /* Prevents overflow in flex/grid */
-}
-
-.content-cell img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: clamp(5px, 1vw, 10px);
-  object-fit: cover; /* Maintain aspect ratio */
-}
-
-.content-cell h3 {
-  margin: clamp(5px, 1vw, 10px) 0;
-  font-size: clamp(14px, 2vw, 18px);
-}
-
-.content-cell p {
-  margin: 0;
-  text-align: center;
-  font-size: clamp(12px, 1.5vw, 16px);
-}
-
-/* Enhanced Media Queries */
-@media (max-width: 480px) {
+/* Media Queries for additional refinements */
+@media (max-width: 399px) {
   .project-grid {
-    grid-template-columns: 1fr; /* Single column for small screens */
-    gap: 8px;
-    padding: 8px;
-  }
-
-  .title-cell {
-    font-size: 16px;
+    /* Single column on small screens */
+    grid-template-columns: 1fr;
+    gap: 10px;
     padding: 10px;
-  }
-
-  .content-cell {
-    padding: 8px;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-  .project-grid {
-    grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
-    gap: 12px;
-    padding: 12px;
   }
 
   .title-cell {
     font-size: 18px;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .project-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
     padding: 15px;
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 400px) and (max-width: 1024px) {
   .project-grid {
-    /* Cap at 4 columns on very wide screens if desired */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    max-width: 1200px; /* Align with container max-width */
+    /* 2 columns for tablets */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
   }
+}
 
-  .title-cell {
-    font-size: 24px;
-  }
+/* Ensure content cells adapt */
+.content-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(10px, 2vw, 15px);
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Ensure container compatibility */
