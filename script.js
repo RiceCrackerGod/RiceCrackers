@@ -171,7 +171,7 @@ fetch('https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETU
         const div = document.createElement("div");
         div.style.cssText = "display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 200px; max-height: 270px; padding: 5px; box-sizing: border-box; flex: 1;";
         div.innerHTML = `
-            <img src="${manhwa.cover_image}" style="width: 150px; height: 200px; object-fit: cover; display: block; margin: 2px auto;">
+            <img href="/read/${manhwa.title.replace(/\s+/g, '-')}" src="${manhwa.cover_image}" style="width: 150px; height: 200px; object-fit: cover; display: block; margin: 2px auto;">
             <h4 style="font-size: clamp(0.6rem, 1.5vw, 1rem); margin: 2px 0; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-wrap:wrap; transform: scale(0.8);">${manhwa.title}</h4>
             <a href="/read/${manhwa.title.replace(/\s+/g, '-')}/chapter-${manhwa.maxChapter}" style="text-align: center; margin: 2px 0; flex: 1;">
                 <p style="font-size: clamp(0.7rem, 1.2vw, 0.875rem); margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Latest Chapter: ${manhwa.maxChapter}</p>
