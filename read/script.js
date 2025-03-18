@@ -31,11 +31,10 @@ const normalizeForMatching = (str) => {
     .trim();               // Remove leading/trailing whitespace
 };
 
-// Extract path info from URL with broader compatibility
+// Extract path info from URL
 const getPathInfo = () => {
   const path = window.location.pathname;
-  // More flexible regex: matches /read/<title>/chapter-<num> with or without .html
-  const match = path.match(/\/read\/([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
+  const match = path.match(/(?:\/[^/]+)*\/read\/([^/]+)(?:\/chapter-(\d+))?\.html$/i);
   
   if (!match) {
     console.error('URL parsing failed:', path);
@@ -74,12 +73,12 @@ const createComicReader = (imageUrls, config = {}) => {
 
     const img = pageDiv.querySelector(`#image-${index}`);
     img.onload = () => {
-      pageDiv.querySelector('.loading-text')?.remove();
+      pageDiv.querySelector('.loading-text').remove();
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
     img.onerror = () => {
       img.src = errorImage;
-      pageDiv.querySelector('.loading-text')?.remove();
+      pageDiv.querySelector('.loading-text').remove();
       pageDiv.querySelector('.error-text').style.display = 'block';
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
@@ -91,6 +90,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const { pageFilename, chapterNumber } = getPathInfo();
   console.log('Path info:', { pageFilename, chapterNumber });
 
+  if (!pageFilename) {
+    console.error('No pageFilename extracted; aborting.');
+    return;
+  }
+
   const apiUrl = "https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETUyK0Bsc1A6XMwF5ZiwvBlLvVLpNNHp-3MpM/exec";
   const elements = {
     title: document.getElementById('manhwa-title'),
@@ -100,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     comicReader: document.getElementById('read-comic'),
   };
 
-  // Set loading states even if pageFilename is null
+  // Set loading states
   Object.entries(elements).forEach(([key, el]) => {
     if (el) {
       switch (key) {
@@ -112,13 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-
-  if (!pageFilename) {
-    console.error('No pageFilename extracted; proceeding with default behavior.');
-    elements.title && (elements.title.innerHTML = '<span style="color:red;">Invalid URL</span>');
-    elements.comicReader && (elements.comicReader.innerHTML = '<p style="color:red;">No comic loaded due to invalid URL</p>');
-    return;
-  }
 
   const normalizedPageFilename = normalizeForMatching(pageFilename);
   console.log('Normalized pageFilename:', normalizedPageFilename);
@@ -135,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const manhwa = data.manhwa_list.find(m => {
         const normalizedJsonTitle = normalizeForMatching(m.title);
         console.log('Comparing:', normalizedJsonTitle, 'with', normalizedPageFilename);
-        console.log('Raw JSON title:', m.title);
+        console.log('Raw JSON title:', m.title); // Log raw title for debugging
         return normalizedJsonTitle === normalizedPageFilename;
       });
 
@@ -223,7 +220,7 @@ function handleLogo() {
 function readFirstChapter() {
   const { pageFilename } = getPathInfo();
   if (pageFilename) {
-    window.location.href = `/read/${pageFilename}/chapter-0.html`; // Fixed missing .html
+    window.location.href = `/read/${pageFilename}/chapter-0.html`;
   } else {
     console.error('Cannot navigate: pageFilename is null');
   }
