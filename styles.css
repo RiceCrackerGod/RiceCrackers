@@ -112,10 +112,90 @@ ul {
   padding: 0.75rem 0;
 }
 
-.header .container {
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .header-container {
+    padding: 0.5rem;
+  }
+  
+  .title {
+    font-size: 1rem;
+  }
+  
+  .emoji {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.main-content {
+  padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem 0;
+  }
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.floating-button:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .floating-button {
+    width: 50px;
+    height: 50px;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: var(--background);
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: var(--radius);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 1rem;
+    padding: 1rem;
+  }
 }
 
 .logo {
@@ -392,19 +472,127 @@ ul {
 /* Project Grid */
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(3, auto);
-  gap: 20px;
-  padding: 20px;
+  /* Responsive columns: auto-fit with min/max width */
+  grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 30vw, 300px), 1fr));
+  /* Auto rows for natural flow */
+  grid-template-rows: auto;
+  /* Responsive gap */
+  gap: clamp(8px, 2vw, 20px);
+  /* Contain within parent */
+  padding: clamp(8px, 2vw, 20px);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%; /* Prevent overflow */
+  box-sizing: border-box;
+  /* Smooth transitions for resizing */
+  transition: gap 0.3s ease, padding 0.3s ease;
 }
 
+/* Title Cell */
 .title-cell {
-  grid-column: 1 / span 5;
+  /* Span all columns dynamically */
+  grid-column: 1 / -1;
   grid-row: 1;
   text-align: center;
-  font-size: 24px;
-  padding: 20px;
+  /* Responsive font size */
+  font-size: clamp(16px, 3vw, 24px);
+  /* Responsive padding */
+  padding: clamp(10px, 2.5vw, 20px);
   background-color: #f0f0f0;
+  width: 100%;
+  box-sizing: border-box;
+  /* Smooth font size transition */
+  transition: font-size 0.3s ease, padding 0.3s ease;
+}
+
+/* Content Cell */
+.content-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(8px, 1.5vw, 15px);
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+  /* Ensure content scales */
+  min-height: 0; /* Prevents overflow in flex/grid */
+}
+
+.content-cell img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: clamp(5px, 1vw, 10px);
+  object-fit: cover; /* Maintain aspect ratio */
+}
+
+.content-cell h3 {
+  margin: clamp(5px, 1vw, 10px) 0;
+  font-size: clamp(14px, 2vw, 18px);
+}
+
+.content-cell p {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(12px, 1.5vw, 16px);
+}
+
+/* Enhanced Media Queries */
+@media (max-width: 480px) {
+  .project-grid {
+    grid-template-columns: 1fr; /* Single column for small screens */
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .title-cell {
+    font-size: 16px;
+    padding: 10px;
+  }
+
+  .content-cell {
+    padding: 8px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .project-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns for tablets */
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .title-cell {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .project-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .project-grid {
+    /* Cap at 4 columns on very wide screens if desired */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    max-width: 1200px; /* Align with container max-width */
+  }
+
+  .title-cell {
+    font-size: 24px;
+  }
+}
+
+/* Ensure container compatibility */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(8px, 2vw, 1rem);
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .content-cell {
