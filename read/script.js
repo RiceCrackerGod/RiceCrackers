@@ -1,12 +1,14 @@
-// Theme Toggle Functionality (optimized for minimal DOM manipulation)
+// Theme Toggle Functionality (optimized for Safari)
 const themeToggleBtn = document.getElementById('theme-toggle');
 if (themeToggleBtn) {
   const themeToggleIcon = themeToggleBtn.querySelector('i');
   let currentTheme = localStorage.getItem('theme') || 'light';
 
   document.documentElement.classList.toggle('dark', currentTheme === 'dark');
-  themeToggleIcon?.classList.toggle('fa-moon', currentTheme === 'light');
-  themeToggleIcon?.classList.toggle('fa-sun', currentTheme === 'dark');
+  if (themeToggleIcon) {
+    themeToggleIcon.classList.toggle('fa-moon', currentTheme === 'light');
+    themeToggleIcon.classList.toggle('fa-sun', currentTheme === 'dark');
+  }
 
   themeToggleBtn.addEventListener('click', () => {
     currentTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -35,10 +37,7 @@ const getPathInfo = () => {
   const path = window.location.pathname;
   const match = path.match(/(?:\/read\/)?([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
   
-  if (!match) {
-    console.error('URL parsing failed:', path);
-    return { pageFilename: null, chapterNumber: null };
-  }
+  if (!match) return { pageFilename: null, chapterNumber: null };
   
   return {
     pageFilename: match[1].replace(/\.html$/i, ''),
@@ -46,23 +45,21 @@ const getPathInfo = () => {
   };
 };
 
-// Optimized comic reader for mobile performance
+// Optimized comic reader for Safari on iPhone 11
 const createComicReader = (imageUrls, config = {}) => {
   const { loadingGif = 'https://yourdomain.com/loading.gif', errorImage = 'https://yourdomain.com/error.jpg' } = config;
   const container = document.getElementById('read-comic');
-  if (!container) {
-    console.warn('Comic container not found');
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = '<div class="loading-state"><p>Loading...</p></div>';
 
-  // Preload first image
+  // Preload first image with Safari-compatible headers
   if (imageUrls.length > 0) {
     const preloadLink = document.createElement('link');
     preloadLink.rel = 'preload';
     preloadLink.href = imageUrls[0];
     preloadLink.as = 'image';
+    preloadLink.setAttribute('crossorigin', 'anonymous'); // Ensure CORS compatibility
     document.head.appendChild(preloadLink);
   }
 
@@ -74,9 +71,8 @@ const createComicReader = (imageUrls, config = {}) => {
         obs.unobserve(img);
       }
     });
-  }, { rootMargin: '100px' }); // Reduced margin for faster loading
+  }, { rootMargin: '50px' }); // Smaller margin for faster loading on smaller screens
 
-  // Batch DOM updates
   const fragment = document.createDocumentFragment();
   imageUrls.forEach((url, index) => {
     const pageDiv = document.createElement('div');
@@ -88,9 +84,8 @@ const createComicReader = (imageUrls, config = {}) => {
              class="wp-manga-chapter-img" 
              alt="Page ${index + 1}" 
              loading="lazy" 
-             decoding="async">
-        <p class="loading-text" style="display:${index === 0 ? 'block' : 'none'}">Loading...</p>
-        <p class="error-text" style="display:none; color:red;">Error</p>
+             decoding="async" 
+             style="max-width: 100%; height: auto;">
       </div>
     `;
     fragment.appendChild(pageDiv);
@@ -99,28 +94,20 @@ const createComicReader = (imageUrls, config = {}) => {
     observer.observe(img);
 
     img.onload = () => {
-      const loadingText = pageDiv.querySelector('.loading-text');
-      if (loadingText) loadingText.style.display = 'none';
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
     img.onerror = () => {
-      console.warn(`Image ${index + 1} failed: ${url}`);
       img.src = errorImage;
       img.onerror = null;
-      const loadingText = pageDiv.querySelector('.loading-text');
-      if (loadingText) loadingText.style.display = 'none';
-      pageDiv.querySelector('.error-text').style.display = 'block';
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
   });
   container.appendChild(fragment);
 };
 
-// Main logic with performance tweaks
+// Main logic with Safari-specific tweaks
 document.addEventListener('DOMContentLoaded', () => {
   const { pageFilename, chapterNumber } = getPathInfo();
-  console.log('Path info:', { pageFilename, chapterNumber });
-
   const apiUrl = "https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETUyK0Bsc1A6XMwF5ZiwvBlLvVLpNNHp-3MpM/exec";
   const elements = {
     title: document.getElementById('manhwa-title'),
@@ -131,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (!pageFilename) {
-    console.error('No pageFilename extracted');
     Object.values(elements).forEach(el => {
       if (el) el.innerHTML = '<p style="color:red;">Invalid URL</p>';
     });
@@ -140,7 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const normalizedPageFilename = normalizeForMatching(pageFilename);
 
-  fetch(apiUrl, { mode: 'cors', credentials: 'omit', cache: 'no-store' })
+  fetch(apiUrl, { 
+    mode: 'cors', 
+    credentials: 'omit', 
+    cache: 'no-store',
+    headers: { 'Accept': 'application/json' } // Ensure JSON response
+  })
     .then(response => response.ok ? response.json() : Promise.reject(`Network error: ${response.status}`))
     .then(data => {
       if (!data?.manhwa_list?.length) throw new Error('Empty manhwa_list');
@@ -156,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.className = 'cover-img';
         img.loading = 'lazy';
         img.decoding = 'async';
+        img.style.cssText = 'max-width: 100%; height: auto;';
         img.onerror = () => img.src = 'https://yourdomain.com/default-cover.jpg';
         elements.cover.appendChild(img);
       }
@@ -201,7 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
     .catch(error => {
-      console.error('Error:', error.message);
       Object.values(elements).forEach(el => {
         if (el) el.innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
       });
