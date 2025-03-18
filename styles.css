@@ -501,26 +501,16 @@ ul {
   box-sizing: border-box;
 }
 
-/* Media Queries for additional refinements */
-@media (max-width: 399px) {
+@media (max-width: 1024px) {
   .project-grid {
-    /* Single column on small screens */
-    grid-template-columns: 1fr;
-    gap: 10px;
-    padding: 10px;
+    /* 2 columns for tablets */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
   }
 
   .title-cell {
     font-size: 18px;
     padding: 15px;
-  }
-}
-
-@media (min-width: 400px) and (max-width: 1024px) {
-  .project-grid {
-    /* 2 columns for tablets */
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
   }
 }
 
