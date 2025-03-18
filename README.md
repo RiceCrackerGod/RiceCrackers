@@ -11,3 +11,4 @@ The Legendary Swordmaster: Only I Have the Power to Forge Swords from Monsters
 Absolute Regression
 Strength Through Adversity, My Cultivation Knows No Limits
 Fighting Ward
+Limitless Ascension: Strength Amid Adversity
