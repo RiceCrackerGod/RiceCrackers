@@ -21,28 +21,33 @@ if (themeToggleBtn) {
   }
 }
 
-// Normalize URL filename to match JSON title
+// Normalize URL filename to match JSON title and format correctly
 const normalizeForMatching = (str) => {
   return str
-    .replace(/[-]+/g, ' ') // Hyphens to spaces
-    .replace(/[,]/g, '')   // Remove commas
-    .toLowerCase()         // Case-insensitive
-    .replace(/\s+/g, ' ')  // Normalize multiple spaces to single
-    .trim();               // Remove leading/trailing whitespace
+    .replace(/[-]+/g, ' ')    // Replace hyphens with spaces
+    .replace(/([,])/g, '$1 ') // Preserve commas and add space after
+    .split(' ')               // Split into words
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize first letter of each word
+    .join(' ')                // Rejoin with spaces
+    .trim();                  // Remove leading/trailing whitespace
 };
 
-// Extract path info from URL with flexible matching
+// Extract path info from URL with flexible matching and remove .html
 const getPathInfo = () => {
   const path = window.location.pathname;
-  // Matches /read/<title>/chapter-<num> with optional .html
-  const match = path.match(/(?:\/[^/]+)*\/read\/([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
+  // Flexible match: /read/<title>/chapter-<num> with optional .html
+  const match = path.match(/(?:\/read\/)?([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
   
   if (!match) {
     console.error('URL parsing failed:', path);
     return { pageFilename: null, chapterNumber: null };
   }
+  
+  // Remove .html from the pageFilename if present
+  let pageFilename = match[1].replace(/\.html$/i, '');
+
   return {
-    pageFilename: match[1], // e.g., "Becoming-a-God,-Starting-as-water-monkey"
+    pageFilename: pageFilename, // e.g., "Becoming-a-God,-Starting-as-water-monkey"
     chapterNumber: match[2] ? parseInt(match[2], 10) : null,
   };
 };
