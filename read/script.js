@@ -220,7 +220,7 @@ function handleLogo() {
 function readFirstChapter() {
   const { pageFilename } = getPathInfo();
   if (pageFilename) {
-    window.location.href = `/read/${pageFilename}/chapter-0.html`;
+    window.location.href = `/read/${pageFilename}/chapter-0`;
   } else {
     console.error('Cannot navigate: pageFilename is null');
   }
