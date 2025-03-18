@@ -34,7 +34,7 @@ const normalizeForMatching = (str) => {
 // Extract path info from URL
 const getPathInfo = () => {
   const path = window.location.pathname;
-  const match = path.match(/(?:\/[^/]+)*\/read\/([^/]+)(?:\/chapter-(\d+))?\.html$/i);
+  const match = path.match(/(?:\/[^/]+)*\/read\/([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
   
   if (!match) {
     console.error('URL parsing failed:', path);
