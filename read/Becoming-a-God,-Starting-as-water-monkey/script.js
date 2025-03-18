@@ -30,7 +30,7 @@ function handleLogo() {
 function handleNext() {
   const { folderName, chapterNumber } = getPathInfo();
   const nextChapter = chapterNumber + 1;
-  window.location.href = `/read/${folderName}/chapter-${nextChapter}.html`;
+  window.location.href = `/read/${folderName}/chapter-${nextChapter}`;
 }
 
 function handleInfo() {
@@ -42,7 +42,7 @@ function handlePrevious() {
   const { folderName, chapterNumber } = getPathInfo();
   const prevChapter = chapterNumber - 1;
   if (prevChapter >= 0) {
-    window.location.href = `/read/${folderName}/chapter-${prevChapter}.html`;
+    window.location.href = `/read/${folderName}/chapter-${prevChapter}`;
   }
 }
 
