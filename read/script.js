@@ -1,27 +1,25 @@
-// Theme Toggle Functionality (unchanged)
+// Theme Toggle Functionality (optimized for minimal DOM manipulation)
 const themeToggleBtn = document.getElementById('theme-toggle');
 if (themeToggleBtn) {
   const themeToggleIcon = themeToggleBtn.querySelector('i');
   let currentTheme = localStorage.getItem('theme') || 'light';
 
   document.documentElement.classList.toggle('dark', currentTheme === 'dark');
-  updateThemeIcon();
+  themeToggleIcon?.classList.toggle('fa-moon', currentTheme === 'light');
+  themeToggleIcon?.classList.toggle('fa-sun', currentTheme === 'dark');
 
   themeToggleBtn.addEventListener('click', () => {
     currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.documentElement.classList.toggle('dark', currentTheme === 'dark');
+    document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', currentTheme);
-    updateThemeIcon();
+    if (themeToggleIcon) {
+      themeToggleIcon.classList.toggle('fa-moon');
+      themeToggleIcon.classList.toggle('fa-sun');
+    }
   });
-
-  function updateThemeIcon() {
-    if (!themeToggleIcon) return;
-    themeToggleIcon.classList.toggle('fa-moon', currentTheme === 'light');
-    themeToggleIcon.classList.toggle('fa-sun', currentTheme === 'dark');
-  }
 }
 
-// Normalize URL filename to match JSON title and format correctly
+// Normalize URL filename efficiently
 const normalizeForMatching = (str) => {
   return str
     .replace(/[-]+/g, ' ')
@@ -32,7 +30,7 @@ const normalizeForMatching = (str) => {
     .trim();
 };
 
-// Extract path info from URL with flexible matching and remove .html
+// Extract path info with minimal regex overhead
 const getPathInfo = () => {
   const path = window.location.pathname;
   const match = path.match(/(?:\/read\/)?([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
@@ -42,14 +40,13 @@ const getPathInfo = () => {
     return { pageFilename: null, chapterNumber: null };
   }
   
-  let pageFilename = match[1].replace(/\.html$/i, '');
   return {
-    pageFilename: pageFilename,
+    pageFilename: match[1].replace(/\.html$/i, ''),
     chapterNumber: match[2] ? parseInt(match[2], 10) : null,
   };
 };
 
-// Create comic reader with lazy loading, preloading, and robust error handling
+// Optimized comic reader for mobile performance
 const createComicReader = (imageUrls, config = {}) => {
   const { loadingGif = 'https://yourdomain.com/loading.gif', errorImage = 'https://yourdomain.com/error.jpg' } = config;
   const container = document.getElementById('read-comic');
@@ -58,15 +55,9 @@ const createComicReader = (imageUrls, config = {}) => {
     return;
   }
 
-  // Initial loading state
-  container.innerHTML = `
-    <div class="loading-state">
-      <p>Loading comic pages...</p>
-      <img src="${loadingGif}" alt="Loading..." class="loading-image">
-    </div>
-  `;
+  container.innerHTML = '<div class="loading-state"><p>Loading...</p></div>';
 
-  // Preload the first image for faster initial display
+  // Preload first image
   if (imageUrls.length > 0) {
     const preloadLink = document.createElement('link');
     preloadLink.rel = 'preload';
@@ -75,6 +66,18 @@ const createComicReader = (imageUrls, config = {}) => {
     document.head.appendChild(preloadLink);
   }
 
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        obs.unobserve(img);
+      }
+    });
+  }, { rootMargin: '100px' }); // Reduced margin for faster loading
+
+  // Batch DOM updates
+  const fragment = document.createDocumentFragment();
   imageUrls.forEach((url, index) => {
     const pageDiv = document.createElement('div');
     pageDiv.className = 'page-break no-gaps';
@@ -86,41 +89,34 @@ const createComicReader = (imageUrls, config = {}) => {
              alt="Page ${index + 1}" 
              loading="lazy" 
              decoding="async">
-        <p class="loading-text">Loading page ${index + 1}...</p>
-        <p class="error-text" style="display:none; color:red;">Failed to load page ${index + 1}</p>
+        <p class="loading-text" style="display:${index === 0 ? 'block' : 'none'}">Loading...</p>
+        <p class="error-text" style="display:none; color:red;">Error</p>
       </div>
     `;
-    container.appendChild(pageDiv);
+    fragment.appendChild(pageDiv);
 
     const img = pageDiv.querySelector(`#image-${index}`);
-    
-    // Lazy load implementation with IntersectionObserver
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          img.src = img.dataset.src;
-          obs.unobserve(img);
-        }
-      });
-    }, { rootMargin: '200px' }); // Load 200px before visible
     observer.observe(img);
 
     img.onload = () => {
-      pageDiv.querySelector('.loading-text')?.remove();
+      const loadingText = pageDiv.querySelector('.loading-text');
+      if (loadingText) loadingText.style.display = 'none';
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
     img.onerror = () => {
-      console.error(`Failed to load image ${index + 1}: ${url}`);
+      console.warn(`Image ${index + 1} failed: ${url}`);
       img.src = errorImage;
-      img.onerror = null; // Prevent infinite loop
-      pageDiv.querySelector('.loading-text')?.remove();
+      img.onerror = null;
+      const loadingText = pageDiv.querySelector('.loading-text');
+      if (loadingText) loadingText.style.display = 'none';
       pageDiv.querySelector('.error-text').style.display = 'block';
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
   });
+  container.appendChild(fragment);
 };
 
-// Main logic
+// Main logic with performance tweaks
 document.addEventListener('DOMContentLoaded', () => {
   const { pageFilename, chapterNumber } = getPathInfo();
   console.log('Path info:', { pageFilename, chapterNumber });
@@ -134,49 +130,22 @@ document.addEventListener('DOMContentLoaded', () => {
     comicReader: document.getElementById('read-comic'),
   };
 
-  Object.entries(elements).forEach(([key, el]) => {
-    if (el) {
-      switch (key) {
-        case 'title': el.innerHTML = '<span>Loading title...</span>'; break;
-        case 'cover': el.innerHTML = '<img src="https://yourdomain.com/loading.gif" alt="Loading cover...">'; break;
-        case 'description': el.innerHTML = '<p>Loading description...</p>'; break;
-        case 'chapterList': el.innerHTML = '<div>Loading chapters...</div>'; break;
-        case 'comicReader': el.innerHTML = '<p>Loading comic...</p>'; break;
-      }
-    } else {
-      console.warn(`Element not found: ${key}`);
-    }
-  });
-
   if (!pageFilename) {
-    console.error('No pageFilename extracted; showing error states.');
-    Object.entries(elements).forEach(([key, el]) => {
-      if (el) el.innerHTML = `<p style="color:red;">Invalid URL: Unable to load ${key}</p>`;
+    console.error('No pageFilename extracted');
+    Object.values(elements).forEach(el => {
+      if (el) el.innerHTML = '<p style="color:red;">Invalid URL</p>';
     });
     return;
   }
 
   const normalizedPageFilename = normalizeForMatching(pageFilename);
-  console.log('Normalized pageFilename:', normalizedPageFilename);
 
   fetch(apiUrl, { mode: 'cors', credentials: 'omit', cache: 'no-store' })
-    .then(response => {
-      if (!response.ok) throw new Error(`Network error: ${response.status} ${response.statusText}`);
-      return response.json();
-    })
+    .then(response => response.ok ? response.json() : Promise.reject(`Network error: ${response.status}`))
     .then(data => {
-      console.log('API response:', data);
-      if (!data?.manhwa_list?.length) throw new Error('Invalid JSON: manhwa_list missing or empty');
-
-      const manhwa = data.manhwa_list.find(m => {
-        const normalizedJsonTitle = normalizeForMatching(m.title);
-        console.log('Comparing:', normalizedJsonTitle, 'with', normalizedPageFilename);
-        console.log('Raw JSON title:', m.title);
-        return normalizedJsonTitle === normalizedPageFilename;
-      });
-
-      if (!manhwa) throw new Error(`No matching manhwa found for: ${normalizedPageFilename}`);
-      console.log('Matched manhwa:', manhwa);
+      if (!data?.manhwa_list?.length) throw new Error('Empty manhwa_list');
+      const manhwa = data.manhwa_list.find(m => normalizeForMatching(m.title) === normalizedPageFilename);
+      if (!manhwa) throw new Error(`No match for: ${normalizedPageFilename}`);
 
       if (elements.title) elements.title.textContent = manhwa.title || 'Untitled';
       if (elements.cover) {
@@ -187,67 +156,54 @@ document.addEventListener('DOMContentLoaded', () => {
         img.className = 'cover-img';
         img.loading = 'lazy';
         img.decoding = 'async';
-        img.onerror = () => {
-          img.src = 'https://yourdomain.com/default-cover.jpg';
-          elements.cover.insertAdjacentHTML('afterbegin', '<p style="color:red;">Failed to load cover</p>');
-        };
+        img.onerror = () => img.src = 'https://yourdomain.com/default-cover.jpg';
         elements.cover.appendChild(img);
       }
       if (elements.description) elements.description.textContent = manhwa.description || 'No description';
-      if (elements.chapterList) {
-        if (manhwa.chapters?.length) {
-          const sortedChapters = [...manhwa.chapters].sort((a, b) => b.chapter_number - a.chapter_number);
-          elements.chapterList.innerHTML = '';
-          sortedChapters.forEach((chapter, index) => {
-            const div = document.createElement('div');
-            div.className = 'chapter-item';
-            div.style.cssText = `
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-              align-items: center;
-              padding: 8px 10px;
-              border-bottom: ${index < sortedChapters.length - 1 ? '1px solid #eee' : 'none'};
-            `;
-            div.innerHTML = `
-              <a href="/read/${pageFilename}/chapter-${chapter.chapter_number}.html" 
-                 style="color: #2c3e50; text-decoration: none; font-weight: 500;">
-                Chapter ${chapter.chapter_number}
-              </a>
-              <span class="chapter-date" style="text-align: right; color: #7f8c8d; font-size: 0.9em;">
-                ${chapter.date || 'No date'}
-              </span>
-            `;
-            elements.chapterList.appendChild(div);
-          });
-        } else {
-          elements.chapterList.innerHTML = '<div style="color:red;">No chapters available</div>';
-        }
+
+      if (elements.chapterList && manhwa.chapters?.length) {
+        const fragment = document.createDocumentFragment();
+        const sortedChapters = [...manhwa.chapters].sort((a, b) => b.chapter_number - a.chapter_number);
+        sortedChapters.forEach((chapter, index) => {
+          const div = document.createElement('div');
+          div.className = 'chapter-item';
+          div.style.cssText = `
+            display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 8px 10px;
+            border-bottom: ${index < sortedChapters.length - 1 ? '1px solid #eee' : 'none'};
+          `;
+          div.innerHTML = `
+            <a href="/read/${pageFilename}/chapter-${chapter.chapter_number}.html" 
+               style="color: #2c3e50; text-decoration: none; font-weight: 500;">
+              Chapter ${chapter.chapter_number}
+            </a>
+            <span style="text-align: right; color: #7f8c8d; font-size: 0.9em;">
+              ${chapter.date || 'No date'}
+            </span>
+          `;
+          fragment.appendChild(div);
+        });
+        elements.chapterList.innerHTML = '';
+        elements.chapterList.appendChild(fragment);
+      } else if (elements.chapterList) {
+        elements.chapterList.innerHTML = '<div style="color:red;">No chapters</div>';
       }
+
       if (chapterNumber !== null && elements.comicReader) {
         const chapter = manhwa.chapters?.find(ch => ch.chapter_number === chapterNumber);
         if (chapter?.images?.length) {
-          console.log('Chapter found:', chapter);
           createComicReader(chapter.images, {
             loadingGif: 'https://yourdomain.com/loading.gif',
             errorImage: 'https://yourdomain.com/error.jpg',
           });
         } else {
-          elements.comicReader.innerHTML = '<p style="color:red;">No images found for this chapter</p>';
+          elements.comicReader.innerHTML = '<p style="color:red;">No images</p>';
         }
       }
     })
     .catch(error => {
-      console.error('Fetch error:', error);
-      Object.entries(elements).forEach(([key, el]) => {
-        if (el) {
-          switch (key) {
-            case 'title': el.innerHTML = '<span style="color:red;">Error loading title</span>'; break;
-            case 'cover': el.innerHTML = '<p style="color:red;">Failed to load cover</p>'; break;
-            case 'description': el.innerHTML = '<p style="color:red;">Error: ' + error.message + '</p>'; break;
-            case 'chapterList': el.innerHTML = '<div style="color:red;">Failed to load chapters</div>'; break;
-            case 'comicReader': el.innerHTML = '<p style="color:red;">Error loading images: ' + error.message + '</p>'; break;
-          }
-        }
+      console.error('Error:', error.message);
+      Object.values(elements).forEach(el => {
+        if (el) el.innerHTML = `<p style="color:red;">Error: ${error.message}</p>`;
       });
     });
 });
@@ -259,9 +215,5 @@ function handleLogo() {
 
 function readFirstChapter() {
   const { pageFilename } = getPathInfo();
-  if (pageFilename) {
-    window.location.href = `/read/${pageFilename}/chapter-0.html`;
-  } else {
-    console.error('Cannot navigate: pageFilename is null');
-  }
+  if (pageFilename) window.location.href = `/read/${pageFilename}/chapter-0.html`;
 }
