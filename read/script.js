@@ -31,9 +31,10 @@ const normalizeForMatching = (str) => {
     .trim();               // Remove leading/trailing whitespace
 };
 
-// Extract path info from URL
+// Extract path info from URL with flexible matching
 const getPathInfo = () => {
   const path = window.location.pathname;
+  // Matches /read/<title>/chapter-<num> with optional .html
   const match = path.match(/(?:\/[^/]+)*\/read\/([^/]+)(?:\/chapter-(\d+))?(?:\.html)?$/i);
   
   if (!match) {
@@ -46,11 +47,14 @@ const getPathInfo = () => {
   };
 };
 
-// Create comic reader
+// Create comic reader with configurable assets
 const createComicReader = (imageUrls, config = {}) => {
-  const { loadingGif = 'https://example.com/loading.gif', errorImage = 'https://example.com/error.jpg' } = config;
+  const { loadingGif = 'https://yourdomain.com/loading.gif', errorImage = 'https://yourdomain.com/error.jpg' } = config;
   const container = document.getElementById('read-comic');
-  if (!container) return;
+  if (!container) {
+    console.warn('Comic container not found');
+    return;
+  }
 
   container.innerHTML = `
     <div class="loading-state">
@@ -73,12 +77,12 @@ const createComicReader = (imageUrls, config = {}) => {
 
     const img = pageDiv.querySelector(`#image-${index}`);
     img.onload = () => {
-      pageDiv.querySelector('.loading-text').remove();
+      pageDiv.querySelector('.loading-text')?.remove();
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
     img.onerror = () => {
       img.src = errorImage;
-      pageDiv.querySelector('.loading-text').remove();
+      pageDiv.querySelector('.loading-text')?.remove();
       pageDiv.querySelector('.error-text').style.display = 'block';
       if (index === 0) container.querySelector('.loading-state')?.remove();
     };
@@ -90,11 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const { pageFilename, chapterNumber } = getPathInfo();
   console.log('Path info:', { pageFilename, chapterNumber });
 
-  if (!pageFilename) {
-    console.error('No pageFilename extracted; aborting.');
-    return;
-  }
-
   const apiUrl = "https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETUyK0Bsc1A6XMwF5ZiwvBlLvVLpNNHp-3MpM/exec";
   const elements = {
     title: document.getElementById('manhwa-title'),
@@ -104,18 +103,30 @@ document.addEventListener('DOMContentLoaded', () => {
     comicReader: document.getElementById('read-comic'),
   };
 
-  // Set loading states
+  // Set loading states regardless of pageFilename
   Object.entries(elements).forEach(([key, el]) => {
     if (el) {
       switch (key) {
         case 'title': el.innerHTML = '<span>Loading title...</span>'; break;
-        case 'cover': el.innerHTML = '<img src="https://example.com/loading.gif" alt="Loading cover...">'; break;
+        case 'cover': el.innerHTML = '<img src="https://yourdomain.com/loading.gif" alt="Loading cover...">'; break;
         case 'description': el.innerHTML = '<p>Loading description...</p>'; break;
         case 'chapterList': el.innerHTML = '<div>Loading chapters...</div>'; break;
         case 'comicReader': el.innerHTML = '<p>Loading comic...</p>'; break;
       }
+    } else {
+      console.warn(`Element not found: ${key}`);
     }
   });
+
+  if (!pageFilename) {
+    console.error('No pageFilename extracted; showing error states.');
+    Object.entries(elements).forEach(([key, el]) => {
+      if (el) {
+        el.innerHTML = `<p style="color:red;">Invalid URL: Unable to load ${key}</p>`;
+      }
+    });
+    return;
+  }
 
   const normalizedPageFilename = normalizeForMatching(pageFilename);
   console.log('Normalized pageFilename:', normalizedPageFilename);
@@ -132,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const manhwa = data.manhwa_list.find(m => {
         const normalizedJsonTitle = normalizeForMatching(m.title);
         console.log('Comparing:', normalizedJsonTitle, 'with', normalizedPageFilename);
-        console.log('Raw JSON title:', m.title); // Log raw title for debugging
+        console.log('Raw JSON title:', m.title);
         return normalizedJsonTitle === normalizedPageFilename;
       });
 
@@ -144,11 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (elements.cover) {
         elements.cover.innerHTML = '';
         const img = document.createElement('img');
-        img.src = manhwa.cover_image || 'https://example.com/default-cover.jpg';
+        img.src = manhwa.cover_image || 'https://yourdomain.com/default-cover.jpg';
         img.alt = `${manhwa.title} Cover`;
         img.className = 'cover-img';
         img.onerror = () => {
-          img.src = 'https://example.com/default-cover.jpg';
+          img.src = 'https://yourdomain.com/default-cover.jpg';
           elements.cover.insertAdjacentHTML('afterbegin', '<p style="color:red;">Failed to load cover</p>');
         };
         elements.cover.appendChild(img);
@@ -188,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chapter?.images?.length) {
           console.log('Chapter found:', chapter);
           createComicReader(chapter.images, {
-            loadingGif: 'https://example.com/loading.gif',
-            errorImage: 'https://example.com/error.jpg',
+            loadingGif: 'https://yourdomain.com/loading.gif',
+            errorImage: 'https://yourdomain.com/error.jpg',
           });
         } else {
           elements.comicReader.innerHTML = '<p style="color:red;">No images found for this chapter</p>';
