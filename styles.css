@@ -479,7 +479,8 @@ ul {
   gap: clamp(10px, 2vw, 20px);
   /* Contain within parent */
   padding: clamp(10px, 2vw, 20px);
-  margin: 0 auto;
+  margin: 0;
+  align-self: center;
   width: 100%;
   max-width: 100%; /* Prevent overflow */
   box-sizing: border-box;
