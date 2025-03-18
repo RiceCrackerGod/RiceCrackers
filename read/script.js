@@ -4,7 +4,6 @@ if (themeToggleBtn) {
   const themeToggleIcon = themeToggleBtn.querySelector('i');
   let currentTheme = localStorage.getItem('theme') || 'light';
 
-  // Set initial theme
   document.documentElement.classList.toggle('dark', currentTheme === 'dark');
   updateThemeIcon();
 
@@ -22,27 +21,35 @@ if (themeToggleBtn) {
   }
 }
 
-// Function to extract path info
+// Normalize titles for consistent comparison
+const normalizeTitle = (title) => {
+  return title
+    .replace(/[,]/g, '') // Remove commas
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .toLowerCase(); // Lowercase for case-insensitive match
+};
+
+// Extract path info from URL
 const getPathInfo = () => {
   const path = window.location.pathname;
-  const match = path.match(/\/read\/([^/]+)(?:\/chapter-(\d+))?\.html$/i); // Case-insensitive
+  const match = path.match(/\/read\/([^/]+)(?:\/chapter-(\d+))?\.html$/i);
   
   return match
     ? {
-        pageFilename: match[1].toLowerCase(),
+        pageFilename: match[1].toLowerCase(), // e.g., "becoming-a-god-starting-as-water-monkey"
         chapterNumber: match[2] ? parseInt(match[2], 10) : null,
       }
     : { pageFilename: null, chapterNumber: null };
 };
 
-// Function to create comic reader with improved loading/error states
+// Create comic reader with per-image loading/error states
 const createComicReader = (imageUrls) => {
   const container = document.getElementById('read-comic');
   if (!container) return;
 
   container.innerHTML = `
     <div class="loading-state">
-      <p>Loading images...</p>
+      <p>Loading comic pages...</p>
       <img src="/path/to/loading.gif" alt="Loading..." class="loading-image">
     </div>
   `;
@@ -52,9 +59,9 @@ const createComicReader = (imageUrls) => {
     pageDiv.className = 'page-break no-gaps';
     pageDiv.innerHTML = `
       <div class="image-wrapper">
-        <img id="image-${index}" src="${url}" class="wp-manga-chapter-img" alt="Chapter image ${index + 1}">
-        <p class="loading-text">Loading image ${index + 1}...</p>
-        <p class="error-text" style="display:none; color:red;">Failed to load image ${index + 1}</p>
+        <img id="image-${index}" src="${url}" class="wp-manga-chapter-img" alt="Page ${index + 1}">
+        <p class="loading-text">Loading page ${index + 1}...</p>
+        <p class="error-text" style="display:none; color:red;">Failed to load page ${index + 1}</p>
       </div>
     `;
     container.appendChild(pageDiv);
@@ -87,11 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
     comicReader: document.getElementById('read-comic'),
   };
 
-  // Set loading states
+  // Set initial loading states
   if (elements.title) elements.title.innerHTML = '<span>Loading title...</span>';
   if (elements.cover) elements.cover.innerHTML = '<img src="/path/to/loading.gif" alt="Loading cover...">';
   if (elements.description) elements.description.innerHTML = '<p>Loading description...</p>';
   if (elements.chapterList) elements.chapterList.innerHTML = '<div>Loading chapters...</div>';
+  if (elements.comicReader) elements.comicReader.innerHTML = '<p>Loading comic...</p>';
 
   fetch(apiUrl)
     .then(response => {
@@ -103,19 +111,20 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!data?.manhwa_list?.length) throw new Error('Invalid JSON: manhwa_list missing or empty');
 
       const manhwa = data.manhwa_list.find(m => {
-        const normalizedTitle = m.title.replace(/\s+/g, '-').toLowerCase();
-        return normalizedTitle === pageFilename && m.cover_image && m.description;
+        const normalizedTitle = normalizeTitle(m.title);
+        console.log('Comparing:', normalizedTitle, 'with', pageFilename);
+        return normalizedTitle === pageFilename;
       });
 
-      if (!manhwa) throw new Error(`No matching manhwa found for: ${pageFilename}`);
+      if (!manhwa) {
+        throw new Error(`No matching manhwa found for: ${pageFilename}`);
+      }
+      console.log('Matched manhwa:', manhwa);
 
       // Update manhwa details
       if (elements.title) {
-        elements.title.textContent = manhwa.title || 'Title unavailable';
-      } else {
-        console.warn('Title element not found');
+        elements.title.textContent = manhwa.title || 'Untitled';
       }
-
       if (elements.cover) {
         elements.cover.innerHTML = '';
         const img = document.createElement('img');
@@ -128,9 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         elements.cover.appendChild(img);
       }
-
       if (elements.description) {
-        elements.description.textContent = manhwa.description || 'Description unavailable';
+        elements.description.textContent = manhwa.description || 'No description available';
       }
 
       // Update chapter list
@@ -151,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             div.innerHTML = `
               <a href="/read/${pageFilename}/chapter-${chapter.chapter_number}.html" 
                  style="color: #2c3e50; text-decoration: none; font-weight: 500;">
-                Chapter-${chapter.chapter_number}
+                Chapter ${chapter.chapter_number}
               </a>
               <span class="chapter-date" style="text-align: right; color: #7f8c8d; font-size: 0.9em;">
                 ${chapter.date || 'No date'}
@@ -160,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.chapterList.appendChild(div);
           });
         } else {
-          elements.chapterList.innerHTML = '<div style="color:red;">Failed to load chapters: None available</div>';
+          elements.chapterList.innerHTML = '<div style="color:red;">No chapters available</div>';
         }
       }
 
@@ -168,16 +176,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (chapterNumber !== null && elements.comicReader) {
         const chapter = manhwa.chapters?.find(ch => ch.chapter_number === chapterNumber);
         if (chapter?.images?.length) {
-          createComicReader(chapter.images); // Use 'images' array from JSON
+          console.log('Chapter found:', chapter);
+          createComicReader(chapter.images);
         } else {
-          elements.comicReader.innerHTML = '<p style="color:red;">No images available for this chapter</p>';
+          elements.comicReader.innerHTML = '<p style="color:red;">No images found for this chapter</p>';
         }
       }
     })
     .catch(error => {
-      console.error('Fetch error:', error);
+      console.error('Error:', error);
       if (elements.title) elements.title.innerHTML = '<span style="color:red;">Error loading title</span>';
-      if (elements.cover) elements.cover.innerHTML = '<p style="color:red;">Failed to load cover image</p>';
+      if (elements.cover) elements.cover.innerHTML = '<p style="color:red;">Failed to load cover</p>';
       if (elements.description) elements.description.innerHTML = '<p style="color:red;">Error: ' + error.message + '</p>';
       if (elements.chapterList) elements.chapterList.innerHTML = '<div style="color:red;">Failed to load chapters</div>';
       if (elements.comicReader) elements.comicReader.innerHTML = '<p style="color:red;">Error loading images: ' + error.message + '</p>';
