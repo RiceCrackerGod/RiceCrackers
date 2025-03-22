@@ -193,7 +193,7 @@ async function loadComicImages() {
  img.src = imageUrl;
  img.alt = `Chapter ${chapterNumber} Page ${index + 1}`;
  img.style.maxWidth = '100%';
- img.onerror = () => (img.src = 'https://yourdomain.com/fallback-image.jpg');
+ img.onerror = () => (img.style.display = 'none');
 
  imageDiv.appendChild(img);
 
