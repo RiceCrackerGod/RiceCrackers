@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RICE CRACKER GOD PROJECT</title>
+    <title>Read Comics Online | RICE CRACKER GOD PROJECT</title>
+    <meta name="description" content="Read your favorite comics online, with RICE CRACKER GOD PROJECT.">
     <!-- Favicon -->
-    <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-    <link rel="mask-icon" href="logo.png" color="#FF9C00">
-    <meta name="msapplication-TileImage" content="logo.png">
+    <link rel="icon" href="tools/logo.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="tools/logo.png" type="image/png" sizes="16x16">
+    <link rel="apple-touch-icon" href="tools/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="tools/logo.png">
+    <link rel="mask-icon" href="tools/logo.png" color="#FF9C00">
+    <meta name="msapplication-TileImage" content="tools/logo.png">
     <meta name="msapplication-TileColor" content="#FF9C00">
     <meta name="theme-color" content="#FF9C00">
+    <meta property="og:title" content="Read Comics Online | RICE CRACKER GOD PROJECT">
+    <meta property="og:url" content="https://www.ricecrackergod.website">
     <!-- Styles -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="tools/styles.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -28,12 +31,22 @@
 
       gtag('config', 'G-SEKBFBGRHJ');
     </script>
+    <!-- Add schema markup -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Read Comics Online | RICE CRACKER GOD PROJECT",
+        "description": "Read your favorite comics online, with RICE CRACKER GOD PROJECT.",
+        "url": "https://www.ricecrackergod.website"
+      }
+    </script>
   </head>
 <body>
     <header class="header">
         <div class="container">
             <button class="logo" onclick="handleLogo()" style="background: transparent; border: none !important;">
-                <img src="logo.png" class="emoji" alt="Logo" width="40" height="40">
+                <img src="tools/logo.png" class="emoji" alt="Logo" width="40" height="40">
                 <h1 class="title" style="color: #FF9C00;">RICE CRACKER GOD PROJECT</h1>
             </button>
             <div class="actions">
@@ -47,7 +60,7 @@
     <main class="container">
       <h3 id="manhwa-title"><!-- Comic Title here --></h3>
         <!-- Main content split into cover and details -->
-        <div class="comic-info" style="display: flex; flex-direction: row; gap: 20px; align-items: flex-start;">
+        <div class="comic-info">
             <!-- Comic Cover Section -->
             <div id="cover-image" class="comic-cover" style="flex: 0 0 40%; max-width: 300px;">
                 <!-- Generate Comic Cover here -->
@@ -62,20 +75,23 @@
                 <span class="info-label">Status:</span>
                 <span class="info-value">OnGoing</span>
             </div>
+            <div class="info-row"><span class="info-label">Description;</span></div>
+            
             <div id="description" class="description" style="text-align: justify; margin-top: 10px;">
                 <!-- Generate Comic Description here -->
             </div>
-            <div class="action-buttons" style="display: flex; justify-content: flex-end; margin-top: 15px;">
+            <div class="action-buttons">
                 <button class="primary-btn" onclick="readFirstChapter()">Read First Chapter</button>
+                <button class="primary-btn" onclick="readLatestChapter()">Read Latest Chapter</button>
             </div>
             </div>
         </div>
 
-        <div class="latest-releases" style="width: 80%; margin: 0 10%;">
-        <h2 style="font-size: 1.5em; margin-bottom: 10px; text-align: center;"><i class="fas fa-star"></i> Chapter Releases</h2>
-        <div class="chapter-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; background: #fff; padding: 5px;"></div>
+        <div class="latest-releases">
+        <h2 style="font-size: 1.5em; margin-bottom: 10px; text-align: center;"><i class="fa-solid fa-user-astronaut"></i> Chapter Release</h2>
+        <div class="chapter-list"></div>
       </div>
-    <script src="script.js"></script>
+    <script src="tools/script.js"></script>
     </main>
 </body>
 </html>

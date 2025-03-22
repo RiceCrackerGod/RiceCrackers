@@ -3,18 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RICE CRACKER GOD PROJECT</title>
+    <title>Read Comics Online | RICE CRACKER GOD PROJECT</title>
+    <meta name="description" content="Read your favorite comics online, with RICE CRACKER GOD PROJECT.">
     <!-- Favicon -->
-    <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
-    <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
-    <link rel="mask-icon" href="logo.png" color="#FF9C00">
-    <meta name="msapplication-TileImage" content="logo.png">
+    <link rel="icon" href="tools/logo.png" type="image/png" sizes="32x32">
+    <link rel="icon" href="tools/logo.png" type="image/png" sizes="16x16">
+    <link rel="apple-touch-icon" href="tools/logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="tools/logo.png">
+    <link rel="mask-icon" href="tools/logo.png" color="#FF9C00">
+    <meta name="msapplication-TileImage" content="tools/logo.png">
     <meta name="msapplication-TileColor" content="#FF9C00">
     <meta name="theme-color" content="#FF9C00">
+    <meta property="og:title" content="Read Comics Online | RICE CRACKER GOD PROJECT">
+    <meta property="og:url" content="https://www.ricecrackergod.website">
     <!-- Styles -->
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="tools/styles.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -28,6 +31,16 @@
 
       gtag('config', 'G-SEKBFBGRHJ');
     </script>
+    <!-- Add schema markup -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Read Comics Online | RICE CRACKER GOD PROJECT",
+        "description": "Read your favorite comics online, with RICE CRACKER GOD PROJECT.",
+        "url": "https://www.ricecrackergod.website"
+      }
+    </script>
   </head>
   <body>
     <button id="scrollTopBtn" class="scroll-top-btn" onclick="scrollToTop()" style="position: fixed; width: 4rem; height: 4rem; display: none;">
@@ -36,7 +49,7 @@
     <header class="header">
       <div class="container">
         <button class="logo" onclick="handleLogo()" style="background: transparent; border: none !important;">
-          <img src="logo.png" class="emoji" alt="Rice Cracker Logo" width="40" height="40" />
+          <img src="tools/logo.png" class="emoji" alt="Rice Cracker Logo" width="40" height="40" />
           <h1 class="title" style="color: #FF9C00;">RICE CRACKER GOD PROJECT</h1>
         </button>
         <div class="actions">
@@ -55,20 +68,20 @@
               <a id="chapter-title" href="#" style="align-self: center; text-align: center;">Loading...</a>
               <div id="chapter-number" class="token-info" style="display: flex; justify-content: flex-end;">Chapter Loading...</div>
             </h3>
-            <div class="hero-cta" style="display: grid; grid-template-columns: repeat(3, auto); gap: 10px;">
-              <button id="prevBtn" class="primary-btn" onclick="handlePrevious()">
-                <i class="fas fa-arrow-left"></i> Previous Chapter
-              </button>
-              <button id="infoBtn" class="primary-btn" onclick="handleInfo()">
-                <i class="fas fa-info-circle"></i> Info
-              </button>
-              <button id="nextBtn" class="primary-btn" onclick="handleNext()">
-                Next Chapter <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
+          </div>
+          <div class="hero-cta">
+            <button id="prevBtn" class="primary-btn" onclick="handlePrevious()">
+              <i class="fas fa-arrow-left"></i> Previous Chapter
+            </button>
+            <button id="infoBtn" class="primary-btn" onclick="handleInfo()">
+              <i class="fas fa-info-circle"></i> Info
+            </button>
+            <button id="nextBtn" class="primary-btn" onclick="handleNext()">
+              Next Chapter <i class="fas fa-arrow-right"></i>
+            </button>
           </div>
           <div id="read-comic" class="comic-reader"></div>
-          <div class="hero-cta" style="display: grid; grid-template-columns: repeat(3, auto); gap: 10px;">
+          <div class="hero-cta">
             <button id="prevBtn" class="primary-btn" onclick="handlePrevious()">
               <i class="fas fa-arrow-left"></i> Previous Chapter
             </button>
@@ -81,7 +94,7 @@
           </div>
         </div>
       </div>
-      <script src="script.js"></script>
+      <script src="tools/script.js"></script>
     </main>
   </body>
 </html>
