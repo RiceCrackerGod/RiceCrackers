@@ -23,7 +23,7 @@ def create_chapter_files():
             template_content = source_file.read()
         
         # Create files from chapter-1.html to chapter-1000.html
-        for i in range(1, 300):  # Or change to 11 for 10 files
+        for i in range(1, 1000):  # Or change to 11 for 10 files
             filename = os.path.join(script_dir, f'chapter-{i}.html')
             with open(filename, 'w', encoding='utf-8') as new_file:
                 new_file.write(template_content)
