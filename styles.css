@@ -1054,14 +1054,6 @@ textarea {
   gap: 4px;
 }
 
-p {
-  font-size: 1.2rem;
-  &:hover {
-      opacity: 1;
-  }
-  color: #121212;
-}
-
 #donation-info {
   transition: opacity 6s ease-in-out;
   opacity: 0;
