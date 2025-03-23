@@ -19,3 +19,4 @@ The-Hero-Returns
 Mercenary-Enrollment
 99-Boss
 Reincarnated-Boss
+Manager-Kim

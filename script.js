@@ -26,11 +26,6 @@ function updateThemeIcon() {
   }
 }
 
-
-function openDonationInfo() {
-  window.location.href = `/`; // Adjust path as needed
-}
-
 // Add animations when scrolling into view
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -66,8 +61,17 @@ document.head.appendChild(style);
 
 function openDonationInfo() {
   const donationInfo = document.getElementById('donation-info');
+  const scrollTarget = document.getElementById('scroll-target');
+  
+  // Toggle donation info visibility
   if (donationInfo.style.display === 'none' || donationInfo.style.display === '') {
     donationInfo.style.display = 'block';
+    
+    // Smooth scroll to target
+    scrollTarget.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
   } else {
     donationInfo.style.display = 'none';
   }
@@ -197,3 +201,25 @@ fetch('https://script.google.com/macros/s/AKfycbxiFXz6KF54Q5Cv-PF58FxLCsDPLhkETU
     }
 })
 .catch(error => console.error("Error fetching JSON:", error));
+
+/* glow.js */
+let btn = document.querySelector(".glow-btn");
+let radios = document.querySelectorAll("[type=radio]");
+let themeBtn = document.querySelector("#theme-btn");
+let body = document.body;
+
+// Set spin as default effect
+const spinRadio = document.querySelector('input[value="spin"]');
+spinRadio.checked = true;
+btn.dataset.effect = "spin";
+
+// Handle radio button changes
+radios.forEach(r => {
+    r.onchange = e => {
+        btn.dataset.effect = e.currentTarget.value;
+        btn.classList.remove('textShine');
+        window.requestAnimationFrame(() => {
+            btn.classList.add('textShine');
+        });
+    };
+});
