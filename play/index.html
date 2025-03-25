@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rice Cracker</title>
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+  <link rel="mask-icon" href="logo.png" color="#FF9C00">
+  <meta name="msapplication-TileImage" content="logo.png">
+  <meta name="msapplication-TileColor" content="#FF9C00">
+  <meta name="theme-color" content="#FF9C00">
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEKBFBGRHJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SEKBFBGRHJ');
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <img src="logo.png" class="emoji" alt="Rice Cracker Logo" width="40" height="40">
+      </div>
+    </div>
+  </header>
+
+  <main id="app">
+    <section class="dark">
+      <div class="grid-item" style="grid-area: cell1;">
+        <button class="effect-button">
+          <span class="text">Content 1</span>
+        </button>
+      </div>
+      <div class="grid-item" style="grid-area: cell2;">
+        <button class="effect-button">
+          <span class="text">Content 2</span>
+        </button>
+      </div>
+      <div class="grid-item" style="grid-area: cell3;">
+        <button class="effect-button">
+          <span class="text">Content 3</span>
+        </button>
+      </div>
+      <div class="grid-item" style="grid-area: cell4;">
+        <button class="effect-button">
+          <span class="text">Content 4</span>
+        </button>
+      </div>
+      <div class="grid-item merged" style="grid-area: cell5;">
+        <button class="effect-button connect-wallet" data-effect="spin">
+          <span class="text">Connect Wallet</span>
+          <span class="shimmer"></span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

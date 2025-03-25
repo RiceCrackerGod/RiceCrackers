@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RICE CRACKER</title>
+  <!-- Favicon -->
+  <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="logo.png" type="image/png" sizes="16x16">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+  <link rel="mask-icon" href="logo.png" color="#FF9C00">
+  <meta name="msapplication-TileImage" content="logo.png">
+  <meta name="msapplication-TileColor" content="#FF9C00">
+  <meta name="theme-color" content="#FF9C00">
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SEKBFBGRHJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SEKBFBGRHJ');
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <img src="logo.png" class="emoji" alt="Rice Cracker Logo" width="40" height="40" />
+        <h1 class="title">RICE CRACKER</h1>
+        <button class="glow-btn redirect" onclick="window.location.href='/'" style="margin-left: 5px; padding: 0.4em 1.2em; max-height: 30px; line-height: 1; display: flex; align-items: center; ">
+          <span class="text"><p style="color: #fff; font-size: 1.2rem;">SFW</p></span>
+        </button>
+      </div>
+      
+      <div class="actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Donation Button -->
+    <button class="donation-button-info" onclick="openDonationInfo()">
+      <i class="fa-solid fa-user-astronaut"></i>
+    </button>
+
+<!-- Donation Info Section -->
+<div id="donation-info" class="services-vertical" style="display: none;">
+  <div class="service-card">
+    <div class="card-header-wrapper">
+      <div class="card-header">
+        <i class="fas fa-bullhorn"></i>
+        <h2>Crypto Donation</h2>
+      </div>
+    </div>
+    <div class="price-display">
+      <div class="contract-info">
+        <div class="contract-address">Bitcoin BitCoin CA: bc1qzmvexwlw8c6r842qrll2xjj8wvjhcyegynz6pt</div>
+        <div class="contract-address">Ethereum ERC-20 CA: 0x29A54EB386bBF79B7E9A41149df2bba0aAf3DcbC</div>
+        <div class="contract-address">BNB BEP-20 CA: 0x29A54EB386bBF79B7E9A41149df2bba0aAf3DcbC</div>
+        <div class="contract-address">USDT BEP-20 CA: 0x29A54EB386bBF79B7E9A41149df2bba0aAf3DcbC</div>
+        <div class="contract-address">USDT ERC-20 CA: 0x29A54EB386bBF79B7E9A41149df2bba0aAf3DcbC</div>
+        <div class="contract-address">$RCGC POL(POS) CA: 0x9d6432b17Bf74b3645b85760be95F7bCB550AB60</div>
+      </div>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="card-header-wrapper">
+      <div class="card-header">
+        <i class="fas fa-sack-dollar"></i>
+        <h2>Story Behind Rice Cracker</h2>
+      </div>
+    </div>
+    <div class="marketplace-info">
+      <div class="note">
+        Inspired by the Chinese God of Wealth, our project—Rice Cracker—weaves a tale of prosperity, generosity, and hope. Like the divine rice cracker, a simple treasure turned symbol of abundance, we transform the ordinary into extraordinary across the vibrant realms of Web3 and crypto. pray with positivity, as our guided we distributes wealth and fortune, sparking unique opportunities in blockchain industries. Everyone's is invited, Send your prayer into this journey, and let the spirit of abundance bless you with prosperity unbound—wisdom whispers that greatness lies in sharing the wealth of possibility!
+      </div>
+    </div>
+    <div id="scroll-target" class="games-note" style="margin: 0;">
+      <button class="glow-btn" onclick="window.location.href='/'">
+        <span class="shimmer"></span>
+        <span class="text"><p style="color: #121212;font-size: 1.2rem;&:hover {opacity: 1;}">Send Your Player!</p></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!-- Announcement Section -->
+    <div>
+      <div class="service-card">
+        <ul id="latest-manhwa" class="feature-list">
+          <!-- Latest manhwa item will be inserted here dynamically -->
+        </ul>
+        <div class="marketplace-info">
+          <h2>Enjoy Our Comic Project, Don't Forget to Share This Website</h2>
+          <h3>Our Commitment is Delivering Great Manhwa/Donghua Content with No Pop Up Ads. Stay Tuned and Follow Rice Cracker God On Twitter</h3>
+          <button class="primary-btn" onclick="twitter()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-twitter-x" viewBox="0 0 16 16">
+              <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"></path>
+            </svg>
+            Twitter
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Grid Section -->
+    <div id="manhwa-container" class="project-grid">
+      <div class="title-cell"><p style="color: black;">Reading Material</p></div>
+    </div>
+    <script src="script.js"></script>
+  </main>
+</body>
+</html>
