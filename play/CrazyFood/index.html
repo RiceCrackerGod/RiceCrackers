@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Frenzy Slots - Casino Game</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="game-container">
+    <header class="game-header">
+      <h1>Food Frenzy Slots</h1>
+      <button id="paytable-button" class="button button-info">Paytable</button>
+    </header>
+
+    <div class="slots-container">
+      <div id="paylines-overlay" class="paylines-overlay"></div>
+      <div id="reels-container" class="reels-container">
+        <!-- Reels will be generated with JavaScript -->
+      </div>
+      <div id="win-overlay" class="win-overlay">
+        <div class="win-message">
+          <span>WIN!</span>
+          <span id="win-amount">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-container">
+      <div class="credits-display">
+        <div class="credit-box">
+          <div class="credit-label">CREDITS</div>
+          <div id="credits-value" class="credit-value">1000</div>
+        </div>
+        <div class="credit-box">
+          <div class="credit-label">WIN</div>
+          <div id="last-win-value" class="credit-value">0</div>
+        </div>
+        <div class="credit-box">
+          <div class="credit-label">LINES</div>
+          <div id="lines-value" class="credit-value">24</div>
+        </div>
+      </div>
+
+      <div class="betting-controls">
+        <button id="bet-min" class="button button-bet">MIN</button>
+        <button id="bet-decrease" class="button button-action">-</button>
+        <div id="current-bet" class="current-bet">5</div>
+        <button id="bet-increase" class="button button-action">+</button>
+        <button id="bet-max" class="button button-bet">MAX</button>
+      </div>
+
+      <div class="action-controls">
+        <button id="spin-button" class="button button-spin">SPIN</button>
+        <button id="auto-spin-button" class="button button-auto-spin">AUTO</button>
+        <div id="auto-spin-options" class="auto-spin-options">
+          <!-- Auto spin options will be generated dynamically via JavaScript -->
+        </div>
+      </div>
+      
+      <div id="auto-spin-status" class="auto-spin-status">
+        <span id="auto-spin-label">Auto spins:</span>
+        <span id="auto-spin-count">0</span>
+        <button id="stop-auto-spin-button" class="button button-stop">STOP</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="paytable-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Paytable - Food Frenzy Slots</h2>
+        <button class="close-button">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="paytable-section">
+          <h3>Symbols & Payouts</h3>
+          <div class="symbols-grid">
+            <!-- Symbols will be generated with JavaScript -->
+          </div>
+        </div>
+        
+        <div class="paytable-section">
+          <h3>Paylines</h3>
+          <p>This game features 24 paylines. Winning combinations pay from left to right.</p>
+          <div class="paylines-grid">
+            <!-- Paylines will be generated with JavaScript -->
+          </div>
+        </div>
+        
+        <div class="paytable-section">
+          <h3>Rules</h3>
+          <ul class="rules-list">
+            <li>All wins multiplied by line bet</li>
+            <li>Malfunction voids all pays and plays</li>
+            <li>Wild symbols substitute for all symbols except scatter</li>
+            <li>Scatter wins are multiplied by total bet</li>
+            <li>3 or more scatter symbols trigger bonus features</li>
+            <li>Maximum win per paid spin is 10,000x bet</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="symbols.js"></script>
+  <script src="paylines.js"></script>
+  <script src="confetti.js"></script>
+  <script src="slotMachine.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
