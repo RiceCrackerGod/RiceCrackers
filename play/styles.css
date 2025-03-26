@@ -74,11 +74,11 @@ main#app {
 /* Desktop Layout */
 @media screen and (min-width: 769px) {
   .dark {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr 1fr;
     grid-template-areas: 
-      "cell1 cell2 cell3 cell4"
-      "cell5 cell5 cell5 cell5";
+      "cell1 cell2 cell3"
+      "cell5 cell5 cell5";
   }
 }
 

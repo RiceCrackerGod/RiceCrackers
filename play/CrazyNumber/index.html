@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #1a1a1a;
+    }
+    #stage {
+      margin: 0 auto;
+      width: 600px;
+      padding: 20px;
+      background: #2a2a2a;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    }
+    .perspective-on {
+      -webkit-perspective: 1000px;
+         -moz-perspective: 1000px;
+              perspective: 1000px;
+    }
+    .perspective-off {
+      -webkit-perspective: 0;
+         -moz-perspective: 0;
+              perspective: 0;
+    }
+    #rotate {
+      margin: 0 auto;
+      width: 450px;
+      height: 220px;
+      padding-top: 200px;
+      transform-style: preserve-3d;
+    }
+    .ring {
+      margin: 0 auto;
+      height: 80px;
+      width: 90px;
+      float: left;
+      transform-style: preserve-3d;
+      transition: box-shadow 0.3s ease;
+    }
+    .slot {
+      position: absolute;
+      width: 90px;
+      height: 80px;
+      box-sizing: border-box;
+      opacity: 0.9;
+      color: rgba(255, 255, 255, 0.9);
+      background: #333;
+      border: solid 2px #fff;
+      -webkit-backface-visibility: hidden;
+         -moz-backface-visibility: hidden;
+              backface-visibility: hidden;
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .backface-on {
+      -webkit-backface-visibility: visible;
+         -moz-backface-visibility: visible;
+              backface-visibility: visible;
+    }
+    .slot p {
+      font-size: 36px;
+      font-weight: bold;
+      line-height: 80px;
+      margin: 0;
+      text-align: center;
+    }
+    .slot.win-slot {
+      animation: neon-glow-slot 1.5s infinite alternate;
+    }
+    .go, .autospin {
+      display: inline-block;
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      background: #00ccff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #00ccff;
+    }
+    .go:disabled, .autospin:disabled {
+      background: #555;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+    label {
+      cursor: pointer;
+      display: inline-block;
+      width: 45%;
+      text-align: center;
+      color: #fff;
+    }
+    .tilted {
+      transform: rotateY(45deg);
+    }
+    .controls {
+      text-align: center;
+      margin: 20px 0;
+      scale: 1.6;
+    }
+    .controls input[type="number"] {
+      width: 60px;
+      padding: 5px;
+      font-size: 16px;
+      background: #333;
+      color: #fff;
+      border: 1px solid #00ccff;
+    }
+    .controls button {
+      padding: 5px 10px;
+      font-size: 16px;
+      background: #00ccff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 0 5px #00ccff;
+    }
+    #message {
+      text-align: center;
+      font-size: 18px;
+      margin: 10px 0;
+      color: #fff;
+      transition: text-shadow 0.3s ease;
+    }
+    #message.win {
+      animation: neon-glow-text 1.5s infinite alternate;
+    }
+    #message .win-amount {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: bold;
+    }
+    #balance {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #00ffcc;
+      text-shadow: 0 0 5px #00ffcc;
+    }
+    .ring.win-glow {
+      animation: neon-glow-reel 1.5s infinite alternate;
+    }
+    @keyframes neon-glow-text {
+      0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff; }
+      100% { text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff; }
+    }
+    @keyframes neon-glow-reel {
+      0% { box-shadow: 0 0 10px, 0 0 20px, 0 0 30px; }
+      100% { box-shadow: 0 0 15px, 0 0 30px, 0 0 50px; }
+    }
+    @keyframes neon-glow-slot {
+      0% { box-shadow: 0 0 5px, 0 0 10px, 0 0 15px; }
+      100% { box-shadow: 0 0 10px, 0 0 20px, 0 0 30px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="stage" class="perspective-on" style="scale: 0.6; ">
+    <div id="rotate">
+      <div id="ring1" class="ring"></div>
+      <div id="ring2" class="ring"></div>
+      <div id="ring3" class="ring"></div>
+      <div id="ring4" class="ring"></div>
+      <div id="ring5" class="ring"></div>
+    </div>
+    <div id="balance">Balance: 1000 credits</div>
+    <div class="controls">
+      <button onclick="adjustBet(-10)">-</button>
+      <input type="number" id="betAmount" value="10" min="1" step="1">
+      <button onclick="adjustBet(10)">+</button>
+    </div>
+    <div class="controls">
+      <input type="number" id="autoSpinCount" value="5" min="1" step="1" style="width: 60px;">
+      <button class="autospin" id="autoSpinButton">Autospin</button>
+      <button class="go" id="spinButton">Spin</button>
+    </div>
+    <div id="message"></div>
+    <div>
+      <label><input type="checkbox" id="xray"> Show inner workings</label>
+      <label style="display: none;"><input type="checkbox" id="perspective"> Toggle perspective</label>
+    </div>
+  </div>
+
+  <!-- Audio elements (replace src with your files) -->
+  <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
+  <audio id="winSound" src="win.mp3" preload="auto"></audio>
+  <audio id="loseSound" src="lose.mp3" preload="auto"></audio>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    const SLOTS_PER_REEL = 12;
+    const REEL_RADIUS = 150;
+    let balance = 1000;
+    let betAmount = 10;
+    let isSpinning = false;
+    let autoSpinRemaining = 0;
+
+    // Audio objects
+    const spinSound = document.getElementById('spinSound');
+    const winSound = document.getElementById('winSound');
+    const loseSound = document.getElementById('loseSound');
+    spinSound.volume = 0.5;
+    winSound.volume = 0.5;
+    loseSound.volume = 0.3;
+
+    function createSlots(ring) {
+      const slotAngle = 360 / SLOTS_PER_REEL; // 30 degrees
+      const seed = getSeed();
+      for (let i = 0; i < SLOTS_PER_REEL; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'slot';
+        const transform = `rotateX(${slotAngle * i}deg) translateZ(${REEL_RADIUS}px)`;
+        slot.style.transform = transform;
+        const number = (seed + i) % 12;
+        $(slot).append(`<p>${number}</p>`);
+        slot.dataset.number = number;
+        slot.dataset.angle = slotAngle * i;
+        ring.append(slot);
+      }
+    }
+
+    function getSeed() {
+      return Math.floor(Math.random() * SLOTS_PER_REEL);
+    }
+
+    // Generate a random bright neon color
+    function getRandomNeonColor() {
+      const neonColors = [
+        '#ff0000', // Red
+        '#00ff00', // Lime
+        '#00ffff', // Cyan
+        '#ff00ff', // Magenta
+        '#ffff00', // Yellow
+        '#ff8000', // Orange
+        '#8000ff', // Purple
+      ];
+      return neonColors[Math.floor(Math.random() * neonColors.length)];
+    }
+
+    function spin(timer) {
+      if (isSpinning || balance < betAmount) {
+        $('#message').text(balance < betAmount ? "Insufficient balance!" : "Please wait for the spin to finish!");
+        return false;
+      }
+      isSpinning = true;
+      $('#spinButton').prop('disabled', true);
+      $('#autoSpinButton').prop('disabled', true);
+      balance -= betAmount;
+      updateBalance();
+
+      // Clear previous win state
+      $('#message').removeClass('win').text('');
+      $('.ring').removeClass('win-glow');
+      $('.slot').removeClass('win-slot');
+      $('.ring, .slot, #message .win-amount').css('box-shadow', '');
+      $('.slot, #message .win-amount').css('background', '');
+
+      spinSound.currentTime = 0;
+      spinSound.play();
+
+      const results = [];
+      const directions = [];
+      for (let i = 1; i <= 5; i++) {
+        let oldSeed = -1;
+        const oldClass = $('#ring' + i).attr('class');
+        if (oldClass.length > 4) oldSeed = parseInt(oldClass.slice(10));
+        let seed = getSeed();
+        while (oldSeed === seed) seed = getSeed();
+
+        // Randomly choose direction: 0 for counterclockwise, 1 for clockwise
+        const direction = Math.random() < 0.5 ? 0 : 1;
+        directions.push(direction);
+
+        // Adjust seed to reflect the slot at 90deg counterclockwise (90 / 30 = 3 slots)
+        const resultSeed = (seed + 3) % 12;
+        results.push(resultSeed);
+
+        // Calculate the target angle for the spin
+        const baseAngle = seed * 30; // Angle for the seed slot to be at 0deg
+        const targetAngle = direction === 0
+          ? -(baseAngle + 360 * 10) // Counterclockwise: negative angle (10 full rotations)
+          : (baseAngle + 360 * 10); // Clockwise: positive angle (10 full rotations)
+
+        // Create a dynamic keyframe for this reel's spin
+        const animationName = `spin-ring-${i}-${Date.now()}`;
+        const keyframes = `
+          @keyframes ${animationName} {
+            0% { transform: rotateX(30deg); }
+            100% { transform: rotateX(${targetAngle}deg); }
+          }
+        `;
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = keyframes;
+        document.head.appendChild(styleSheet);
+
+        $('#ring' + i)
+          .css('animation', `back-spin 1s, ${animationName} ${timer + i * 0.5}s`)
+          .attr('class', `ring spin-${seed}`);
+      }
+
+      setTimeout(() => {
+        spinSound.pause();
+        checkWin(results, directions);
+        isSpinning = false;
+        $('#spinButton').prop('disabled', false);
+        $('#autoSpinButton').prop('disabled', false);
+        if (autoSpinRemaining > 0) {
+          autoSpinRemaining--;
+          updateAutoSpinMessage();
+          if (autoSpinRemaining > 0 && balance >= betAmount) {
+            setTimeout(() => spin(2), 500);
+          } else {
+            $('#message').text(autoSpinRemaining === 0 ? "Autospin completed!" : "Autospin stopped: Insufficient balance!");
+          }
+        }
+      }, (timer + 5 * 0.5) * 1000);
+
+      return true;
+    }
+
+    function checkWin(results, directions) {
+      const counts = {};
+      results.forEach(num => counts[num] = (counts[num] || 0) + 1);
+      let winAmount = 0;
+      let winningNum = null;
+
+      for (const num in counts) {
+        if (counts[num] >= 3) {
+          const multiplier = counts[num] === 3 ? 10 : counts[num] === 4 ? 50 : 100;
+          winAmount = betAmount * multiplier;
+          winningNum = num;
+          $('#message')
+            .addClass('win')
+            .html(`You won <span class="win-amount">${winAmount} credits</span>! (${counts[num]} x ${num})`);
+          winSound.currentTime = 0;
+          winSound.play();
+          break;
+        }
+      }
+
+      if (winAmount === 0) {
+        $('#message').removeClass('win').text(autoSpinRemaining === 0 ? "No win this time!" : "");
+        if (autoSpinRemaining === 0) {
+          loseSound.currentTime = 0;
+          loseSound.play();
+        }
+      } else {
+        // Generate a random color for this win
+        const winColor = getRandomNeonColor();
+
+        // Apply the color to the win message
+        $('#message .win-amount')
+          .css('background', winColor)
+          .css('box-shadow', `0 0 10px ${winColor}, 0 0 20px ${winColor}`);
+
+        // Highlight winning reels and slots at 90deg
+        results.forEach((num, i) => {
+          if (num === parseInt(winningNum)) {
+            const reel = $('#ring' + (i + 1));
+            reel.addClass('win-glow');
+            reel.css('box-shadow', `0 0 15px ${winColor}, 0 0 25px ${winColor}, 0 0 35px ${winColor}`);
+
+            // Highlight the slot at 90deg counterclockwise
+            reel.find('.slot').each(function() {
+              const angle = parseFloat($(this).data('angle'));
+              if (Math.abs(angle - 90) < 1 && parseInt($(this).data('number')) === parseInt(winningNum)) {
+                $(this).addClass('win-slot');
+                $(this).css('background', winColor);
+                $(this).css('box-shadow', `0 0 10px ${winColor}, 0 0 20px ${winColor}`);
+              }
+            });
+          }
+        });
+
+        setTimeout(() => {
+          $('.ring').removeClass('win-glow');
+          $('.slot').removeClass('win-slot');
+          $('.ring, .slot, #message .win-amount').css('box-shadow', '');
+          $('.slot, #message .win-amount').css('background', '');
+          if (autoSpinRemaining === 0) $('#message').removeClass('win');
+        }, 3000);
+      }
+
+      balance += winAmount;
+      updateBalance();
+    }
+
+    function updateBalance() {
+      $('#balance').text(`Balance: ${balance} credits`);
+    }
+
+    function adjustBet(amount) {
+      betAmount = Math.max(1, betAmount + amount);
+      $('#betAmount').val(betAmount);
+    }
+
+    function startAutoSpin() {
+      if (isSpinning) return;
+      const count = parseInt($('#autoSpinCount').val()) || 1;
+      autoSpinRemaining = Math.max(1, count);
+      updateAutoSpinMessage();
+      spin(2);
+    }
+
+    function updateAutoSpinMessage() {
+      if (autoSpinRemaining > 0) {
+        $('#message').text(`Autospin: ${autoSpinRemaining} spins remaining`);
+      }
+    }
+
+    $(document).ready(function() {
+      for (let i = 1; i <= 5; i++) createSlots($('#ring' + i));
+      $('#spinButton').on('click', () => spin(2));
+      $('#autoSpinButton').on('click', startAutoSpin);
+      $('#xray').on('click', function() {
+        const tilt = $(this).is(':checked') ? 'tiltin' : 'tiltout';
+        $('.slot').toggleClass('backface-on', $(this).is(':checked'));
+        $('#rotate').css('animation', `${tilt} 2s 1`);
+        setTimeout(() => $('#rotate').toggleClass('tilted'), tilt === 'tiltin' ? 2000 : 1900);
+      });
+      $('#perspective').on('click', () => $('#stage').toggleClass('perspective-on perspective-off'));
+      $('#betAmount').on('change', () => {
+        betAmount = Math.max(1, parseInt($('#betAmount').val()) || 1);
+        $('#betAmount').val(betAmount);
+      });
+      $('#autoSpinCount').on('change', () => {
+        const val = Math.max(1, parseInt($('#autoSpinCount').val()) || 1);
+        $('#autoSpinCount').val(val);
+      });
+    });
+  </script>
+</body>
+</html>
