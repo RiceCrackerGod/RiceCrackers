@@ -1,0 +1,704 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Ma Shan Zheng', 'Arial', sans-serif;
+    background-color: #1a0d00;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                      url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50C50 55.5 55.5 50 50 55.5C44.5 50 50 44.5 50 50Z' fill='%23cf1322' fill-opacity='0.1'/%3E%3Cpath d='M0 0C0 5.5 5.5 0 0 5.5C-5.5 0 0 -5.5 0 0Z' fill='%23cf1322' fill-opacity='0.1' transform='translate(25 25)'/%3E%3Cpath d='M0 0C0 5.5 5.5 0 0 5.5C-5.5 0 0 -5.5 0 0Z' fill='%23cf1322' fill-opacity='0.1' transform='translate(75 25)'/%3E%3Cpath d='M0 0C0 5.5 5.5 0 0 5.5C-5.5 0 0 -5.5 0 0Z' fill='%23cf1322' fill-opacity='0.1' transform='translate(25 75)'/%3E%3Cpath d='M0 0C0 5.5 5.5 0 0 5.5C-5.5 0 0 -5.5 0 0Z' fill='%23cf1322' fill-opacity='0.1' transform='translate(75 75)'/%3E%3C/svg%3E");
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Gold Coin Background Animation */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Ccircle cx='15' cy='15' r='10' fill='%23d4af37' fill-opacity='0.1'/%3E%3Ccircle cx='15' cy='15' r='6' fill='%23d4af37' fill-opacity='0.15'/%3E%3C/svg%3E");
+    opacity: 0.3;
+    z-index: -1;
+    animation: coinShimmer 8s linear infinite;
+}
+
+@keyframes coinShimmer {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    background-color: #240d0d;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    border: 4px solid #d4af37;
+    position: relative;
+}
+
+/* Game Title */
+.game-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #d4af37;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-title h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Slot Machine Styling */
+.slot-machine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.slot-decoration {
+    width: 60px;
+    height: 400px;
+    position: relative;
+}
+
+.slot-decoration.left {
+    background: linear-gradient(to right, #8B0000, #240d0d);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    margin-right: 5px;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10C10 10.5 10.5 10 10 10.5C9.5 10 10 9.5 10 10Z' fill='%23d4af37' fill-opacity='0.3'/%3E%3C/svg%3E");
+}
+
+.slot-decoration.right {
+    background: linear-gradient(to left, #8B0000, #240d0d);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    margin-left: 5px;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10C10 10.5 10.5 10 10 10.5C9.5 10 10 9.5 10 10Z' fill='%23d4af37' fill-opacity='0.3'/%3E%3C/svg%3E");
+}
+
+.slot-container {
+    position: relative;
+    width: 700px;
+    height: 400px;
+    background-color: #1a0d00;
+    border: 10px solid #8B0000;
+    border-radius: 10px;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.9), 
+                0 0 15px rgba(212, 175, 55, 0.5),
+                0 0 30px rgba(212, 175, 55, 0.3);
+    overflow: hidden;
+}
+
+/* Golden light animation at the edges of the slot container */
+.slot-container::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 15px;
+    background: linear-gradient(45deg, 
+                rgba(212, 175, 55, 0.2), 
+                rgba(212, 175, 55, 0), 
+                rgba(212, 175, 55, 0.2), 
+                rgba(212, 175, 55, 0));
+    background-size: 400% 400%;
+    z-index: -1;
+    animation: goldBorderPulse 10s ease infinite;
+}
+
+@keyframes goldBorderPulse {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.reels-container {
+    display: flex;
+    height: 100%;
+    position: relative;
+}
+
+.reel {
+    flex: 1;
+    background-color: #1a0d00;
+    position: relative;
+    overflow: hidden;
+    border-right: 2px solid #8B0000;
+}
+
+.reel:last-child {
+    border-right: none;
+}
+
+.reel-strip {
+    position: absolute;
+    width: 100%;
+    height: 1000%; /* Extra long for smooth spinning */
+    top: 0;
+    left: 0;
+    transition: transform 3s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.number-tile {
+    height: calc(100% / 33); /* For 33 numbers (0-32) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem; /* Slightly larger for emoji display */
+    color: #fff;
+    text-shadow: 1px 1px 2px black;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+    background-image: radial-gradient(circle, rgba(212, 175, 55, 0.1) 10%, transparent 70%);
+    position: relative;
+    overflow: hidden;
+}
+
+.number-tile::after {
+    content: "";
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    width: 80%;
+    height: 150%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(45deg);
+    animation: shimmerEffect 4s infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmerEffect {
+    0% {
+        top: -100%;
+        left: -100%;
+    }
+    100% {
+        top: 100%;
+        left: 100%;
+    }
+}
+
+.number-tile.winning {
+    color: #d4af37;
+    font-weight: bold;
+    background-color: rgba(212, 175, 55, 0.3);
+    border: 2px solid #d4af37;
+    animation: pulse 1s infinite alternate;
+}
+
+/* Result Cells */
+.result-cells {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    pointer-events: none;
+}
+
+.result-cell {
+    border: 1px dashed rgba(212, 175, 55, 0.3);
+    border-radius: 5px;
+}
+
+.result-cell.highlight {
+    background-color: rgba(212, 175, 55, 0.2);
+    box-shadow: inset 0 0 10px #d4af37;
+}
+
+/* Paylines Overlay */
+.paylines-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.payline {
+    position: absolute;
+    height: 6px;
+    background-color: rgba(255, 0, 0, 0.8);
+    border-radius: 3px;
+    transform-origin: 0 center;
+    display: none;
+}
+
+.payline.active {
+    display: block;
+    animation: glow 1s infinite alternate;
+}
+
+/* Payline info section */
+.paylines-info {
+    background-color: rgba(26, 13, 0, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    border: 2px solid #d4af37;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+.paylines-info h3 {
+    text-align: center;
+    color: #d4af37;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.paylines-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.payline-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-basis: calc(16.666% - 10px);
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.payline-item:hover {
+    background-color: rgba(212, 175, 55, 0.2);
+}
+
+.payline-name {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #d4af37;
+}
+
+.payline-preview {
+    width: 100%;
+    height: 40px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    position: relative;
+}
+
+/* Controls Section */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(26, 13, 0, 0.8);
+    border-radius: 10px;
+    padding: 15px;
+    border: 2px solid #d4af37;
+    margin-bottom: 20px;
+}
+
+.balance-container, .bet-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 120px;
+}
+
+.balance-label, .bet-label {
+    color: #d4af37;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.balance-value, .bet-value {
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.bet-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn {
+    background-color: #8B0000;
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Ma Shan Zheng', 'Arial', sans-serif;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover {
+    background-color: #a50000;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+}
+
+.spin-btn, .auto-spin-btn {
+    background-color: #8B0000;
+    min-width: 120px;
+    height: 60px;
+    font-size: 1.5rem;
+}
+
+.spin-btn {
+    background-image: linear-gradient(145deg, #a50000, #8B0000);
+}
+
+.auto-spin-btn.active {
+    background-color: #006400;
+    background-image: linear-gradient(145deg, #008000, #006400);
+}
+
+.bet-btn {
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    background-color: #4d3319;
+}
+
+/* Auto-spin options */
+.auto-spin-options {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(26, 13, 0, 0.95);
+    border: 3px solid #d4af37;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 100;
+    width: 300px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.3);
+    animation: fadeIn 0.3s ease;
+}
+
+.auto-spin-title {
+    color: #d4af37;
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.auto-spin-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.auto-spin-amount {
+    flex: 1;
+    margin: 0 5px;
+    background-color: #4d3319;
+    color: #d4af37;
+    padding: 10px;
+    border: 2px solid #d4af37;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auto-spin-amount:hover {
+    background-color: #5d4329;
+    transform: translateY(-2px);
+}
+
+.auto-spin-cancel {
+    width: 100%;
+    background-color: #8B0000;
+    color: #d4af37;
+    padding: 10px;
+    border: 2px solid #d4af37;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auto-spin-cancel:hover {
+    background-color: #a50000;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -60%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Paylines button container */
+.paylines-button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.paylines-guide-btn {
+    background-color: #4d3319;
+    padding: 10px 20px;
+}
+
+.paylines-guide-btn:hover {
+    background-color: #5d4329;
+}
+
+/* Notifications */
+.notifications {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 300px;
+    z-index: 100;
+}
+
+.notification {
+    background-color: rgba(26, 13, 0, 0.9);
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-left: 5px solid #d4af37;
+    animation: slideIn 0.3s ease;
+    position: relative;
+}
+
+.notification.win {
+    border-left-color: #00a800;
+}
+
+.notification.lose {
+    border-left-color: #a80000;
+}
+
+.notification-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+}
+
+.notification-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #d4af37;
+}
+
+.notification.win .notification-title {
+    color: #00a800;
+}
+
+.notification.lose .notification-title {
+    color: #a80000;
+}
+
+/* Animations */
+@keyframes spin-clockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes spin-counter-clockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.1); }
+}
+
+@keyframes glow {
+    from { opacity: 0.7; }
+    to { opacity: 1; }
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 20;
+    }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .game-title h1 {
+        font-size: 2.5rem;
+    }
+    
+    .slot-container {
+        width: 600px;
+        height: 350px;
+    }
+    
+    .slot-decoration {
+        width: 40px;
+        height: 350px;
+    }
+    
+    .number-tile {
+        font-size: 1.8rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .game-title h1 {
+        font-size: 2rem;
+    }
+    
+    .slot-container {
+        width: 500px;
+        height: 300px;
+    }
+    
+    .slot-decoration {
+        width: 30px;
+        height: 300px;
+    }
+    
+    .number-tile {
+        font-size: 1.5rem;
+    }
+    
+    .controls {
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+    
+    .spin-btn, .auto-spin-btn {
+        min-width: 100px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+    
+    .payline-item {
+        flex-basis: calc(33.333% - 10px);
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .game-title h1 {
+        font-size: 1.8rem;
+    }
+    
+    .slot-container {
+        width: 100%;
+        height: 250px;
+    }
+    
+    .slot-decoration {
+        display: none;
+    }
+    
+    .number-tile {
+        font-size: 1.2rem;
+    }
+    
+    .controls {
+        padding: 10px;
+    }
+    
+    .balance-container, .bet-container {
+        min-width: 90px;
+        padding: 5px;
+    }
+    
+    .balance-label, .bet-label {
+        font-size: 1rem;
+    }
+    
+    .balance-value, .bet-value {
+        font-size: 1.4rem;
+    }
+    
+    .payline-item {
+        flex-basis: calc(50% - 10px);
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .game-title h1 {
+        font-size: 1.5rem;
+    }
+    
+    .slot-container {
+        height: 200px;
+    }
+    
+    .number-tile {
+        font-size: 1rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .balance-container, .bet-container, .spin-btn, .auto-spin-btn {
+        width: 100%;
+    }
+}

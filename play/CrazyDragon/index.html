@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Dragon Slots</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="game-title">
+            <h1>福龍 Fortune Dragon</h1>
+        </div>
+
+        <div class="slot-machine">
+            <div class="slot-decoration left"></div>
+            
+            <div class="slot-container">
+                <div class="paylines-overlay" id="paylines-overlay">
+                    <!-- Paylines will be displayed here -->
+                </div>
+                
+                <div class="reels-container">
+                    <div class="reel" data-direction="clockwise">
+                        <div class="reel-strip" id="reel-0"></div>
+                    </div>
+                    <div class="reel" data-direction="counter-clockwise">
+                        <div class="reel-strip" id="reel-1"></div>
+                    </div>
+                    <div class="reel" data-direction="clockwise">
+                        <div class="reel-strip" id="reel-2"></div>
+                    </div>
+                    <div class="reel" data-direction="counter-clockwise">
+                        <div class="reel-strip" id="reel-3"></div>
+                    </div>
+                    <div class="reel" data-direction="clockwise">
+                        <div class="reel-strip" id="reel-4"></div>
+                    </div>
+                    <div class="reel" data-direction="counter-clockwise">
+                        <div class="reel-strip" id="reel-5"></div>
+                    </div>
+                </div>
+                
+                <div class="result-cells">
+                    <!-- Result cells will be dynamically added -->
+                </div>
+            </div>
+            
+            <div class="slot-decoration right"></div>
+        </div>
+
+        <div class="paylines-info" style="display: none;">
+            <h3>Paylines</h3>
+            <div class="paylines-container">
+                <div class="payline-item" data-payline="0">
+                    <span class="payline-name">Wave Pattern</span>
+                    <div class="payline-preview"></div>
+                </div>
+                <div class="payline-item" data-payline="1">
+                    <span class="payline-name">Double Happiness</span>
+                    <div class="payline-preview"></div>
+                </div>
+                <div class="payline-item" data-payline="2">
+                    <span class="payline-name">Dragon's Spine</span>
+                    <div class="payline-preview"></div>
+                </div>
+                <div class="payline-item" data-payline="3">
+                    <span class="payline-name">Coin Stack</span>
+                    <div class="payline-preview"></div>
+                </div>
+                <div class="payline-item" data-payline="4">
+                    <span class="payline-name">Lantern Glow</span>
+                    <div class="payline-preview"></div>
+                </div>
+                <div class="payline-item" data-payline="5">
+                    <span class="payline-name">Phoenix Rise</span>
+                    <div class="payline-preview"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="paylines-button-container">
+            <button id="paylines-guide-btn" class="btn paylines-guide-btn">Paylines Guide</button>
+        </div>
+
+        <div class="controls">
+            <div class="balance-container">
+                <div class="balance-label">Balance</div>
+                <div class="balance-value" id="balance">1000</div>
+            </div>
+            <button id="spin-btn" class="btn spin-btn">Spin</button>
+            <button id="auto-spin-btn" class="btn auto-spin-btn">Auto Spin</button>
+            <div class="bet-container">
+                <div class="bet-label">Bet</div>
+                <div class="bet-controls">
+                    <button id="decrease-bet" class="btn bet-btn">-</button>
+                    <div class="bet-value" id="bet-amount">10</div>
+                    <button id="increase-bet" class="btn bet-btn">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="notifications" class="notifications">
+            <!-- Notifications will appear here -->
+        </div>
+    </div>
+
+    <script src="paylines.js"></script>
+    <script src="animations.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
